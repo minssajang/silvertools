@@ -230,3 +230,80 @@ CREATE INDEX IF NOT EXISTS idx_family_member        ON silver_family_links(famil
 CREATE INDEX IF NOT EXISTS idx_share_code           ON silver_share_sessions(share_code);
 CREATE INDEX IF NOT EXISTS idx_profiles_phone       ON silver_profiles(phone);
 CREATE INDEX IF NOT EXISTS idx_profiles_invite      ON silver_profiles(invite_code);
+
+-- =============================================
+-- MCP / 키워드 관리 테이블 (관리자용)
+-- =============================================
+
+-- 키워드 검색량 통계
+CREATE TABLE IF NOT EXISTS keyword_stats (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  hint        TEXT NOT NULL,
+  keyword     TEXT NOT NULL,
+  pc          INT DEFAULT 0,
+  mobile      INT DEFAULT 0,
+  total       INT DEFAULT 0,
+  competition TEXT,
+  doc_count   INT,
+  created_at  TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(hint, keyword)
+);
+
+-- 찜한 키워드
+CREATE TABLE IF NOT EXISTS keyword_picks (
+  id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tool_id    TEXT NOT NULL,
+  keyword    TEXT NOT NULL,
+  memo       TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(tool_id, keyword)
+);
+
+-- 블로그 발행 배치 로그
+CREATE TABLE IF NOT EXISTS doc_batch_log (
+  id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  date       DATE NOT NULL,
+  tool_id    TEXT,
+  keyword    TEXT,
+  title      TEXT,
+  slug       TEXT,
+  status     TEXT DEFAULT 'done',
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- 사이트 설정 (관리자)
+CREATE TABLE IF NOT EXISTS settings (
+  key        TEXT PRIMARY KEY,
+  value      JSONB,
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- keyword_stats 요약 RPC 함수
+CREATE OR REPLACE FUNCTION keyword_stats_summary()
+RETURNS TABLE(hint TEXT, keyword_count BIGINT, max_total INT, avg_total NUMERIC)
+LANGUAGE sql STABLE AS $$
+  SELECT hint,
+         COUNT(*)::BIGINT AS keyword_count,
+         MAX(total)       AS max_total,
+         ROUND(AVG(total), 0) AS avg_total
+  FROM keyword_stats
+  GROUP BY hint
+  ORDER BY max_total DESC;
+$$;
+
+-- 인덱스
+CREATE INDEX IF NOT EXISTS idx_keyword_stats_hint  ON keyword_stats(hint);
+CREATE INDEX IF NOT EXISTS idx_keyword_stats_total ON keyword_stats(total DESC);
+CREATE INDEX IF NOT EXISTS idx_keyword_picks_tool  ON keyword_picks(tool_id);
+CREATE INDEX IF NOT EXISTS idx_doc_batch_date      ON doc_batch_log(date DESC);
+
+-- RLS (service_role만 접근 - 관리자 전용)
+ALTER TABLE keyword_stats  ENABLE ROW LEVEL SECURITY;
+ALTER TABLE keyword_picks  ENABLE ROW LEVEL SECURITY;
+ALTER TABLE doc_batch_log  ENABLE ROW LEVEL SECURITY;
+ALTER TABLE settings       ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "keyword_stats_service_only"  ON keyword_stats  FOR ALL USING (false);
+CREATE POLICY "keyword_picks_service_only"  ON keyword_picks  FOR ALL USING (false);
+CREATE POLICY "doc_batch_log_service_only"  ON doc_batch_log  FOR ALL USING (false);
+CREATE POLICY "settings_service_only"       ON settings       FOR ALL USING (false);
