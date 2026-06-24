@@ -35,20 +35,6 @@
 
 ---
 
-## 🚀 시작하기
-
-```bash
-git clone https://github.com/minssajang/silvertools.git
-cd silvertools
-npm install
-cp .env.example .env.local
-npm run dev
-```
-
-환경변수 설정 및 배포 방법은 **[SETUP_GUIDE.md](./SETUP_GUIDE.md)** 를 참고하세요.
-
----
-
 ## 📄 라이선스
 
 MIT License © 2025 SilverTools
