@@ -27,8 +27,8 @@ const I18N = {
     heading: 'FAQ',
     sub: 'Answers to common questions about SilverTools',
     faqs: [
-      { q: 'Are all tools free to use?', a: 'Yes, all tools — CardNews Converter, Thumbnail, Sound, Voice, Text, and Clock (Timer) — are completely free and require no sign-up.' },
-      { q: 'How does the CardNews Converter work?', a: 'Drag an HTML card news file into the converter page, and it automatically generates 7 PNG images plus a slideshow video, ready to upload as an Instagram carousel.' },
+      { q: 'Are all tools free to use?', a: 'Yes, all tools — Magnifier, Medicine reminders, Hospital finder, Emergency SOS, Brain games, Health records, Large-print news, and Transit — are completely free. Most tools work without signing up. Account registration is only required for saving personal data such as medication history and health records.' },
+      { q: 'How does the Magnifier work?', a: 'Open the Magnifier page and point your camera at any text or object to zoom in in real time. You can also capture a photo and use OCR to extract and copy text.' },
       { q: 'Is my text or image data stored on your servers?', a: 'Most tools process your data entirely in your browser — nothing is sent to or stored on our servers. See our Privacy Policy for details.' },
       { q: 'Is sign-up required?', a: 'No sign-up is required for regular use. Login is only required for admin features.' },
       { q: 'Who owns the copyright to content I generate?', a: 'Copyright of output you create using content you provided generally belongs to you. See our Terms of Use for details.' },

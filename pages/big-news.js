@@ -60,8 +60,9 @@ export default function BigNews() {
           tools: [{ type: 'web_search_20250305', name: 'web_search' }],
           messages: [{
             role: 'user',
-            content: `오늘 날짜 기준으로 ${src.query} 주요 기사 5개를 검색해서, 다음 JSON 형식으로만 응답해주세요. 다른 텍스트 없이 JSON만:
-{"articles":[{"title":"제목","summary":"2~3줄 요약. 어르신이 이해하기 쉬운 쉬운 말로.","category":"${src.ko}","url":""}]}`
+            content: lang === 'ko'
+              ? `오늘 날짜 기준으로 ${src.query} 주요 기사 5개를 검색해서, 다음 JSON 형식으로만 응답해주세요. 다른 텍스트 없이 JSON만:\n{"articles":[{"title":"제목","summary":"2~3줄 요약. 어르신이 이해하기 쉬운 쉬운 말로.","category":"${src.ko}","url":""}]}`
+              : `Search for 5 major ${src.en} news articles from today and respond ONLY in this JSON format with no other text:\n{"articles":[{"title":"headline","summary":"2-3 sentence summary in simple, easy-to-read English.","category":"${src.en}","url":""}]}`
           }]
         })
       })
@@ -72,12 +73,18 @@ export default function BigNews() {
       setNews(parsed.articles || [])
     } catch (e) {
       // Claude API 없으면 샘플 뉴스 표시
-      setNews([
+      setNews(lang === 'ko' ? [
         { title: '오늘의 날씨 — 전국 맑음, 낮 최고 기온 25도', summary: '오늘은 전국적으로 맑은 날씨가 예상됩니다. 낮 최고 기온은 25도 안팎으로 따뜻한 봄 날씨가 이어지겠습니다.', category: '날씨' },
         { title: '독감 예방접종 이달 말까지 무료 — 65세 이상 대상', summary: '보건복지부는 65세 이상 어르신을 대상으로 독감 예방접종을 이달 말까지 무료로 실시한다고 밝혔습니다. 가까운 보건소나 지정 의원을 방문하시면 됩니다.', category: '건강' },
         { title: '기초연금 수급 기준 완화 — 더 많은 분들이 혜택 받으실 수 있어', summary: '정부가 기초연금 수급 기준을 완화해 더 많은 어르신이 혜택을 받을 수 있게 됩니다. 신청은 주민센터에서 가능합니다.', category: '사회' },
         { title: '버스 경로 안내 앱, 어르신 큰 글씨 모드 추가', summary: '주요 대중교통 앱들이 어르신을 위한 큰 글씨 모드를 추가했습니다. 설정 메뉴에서 글씨 크기를 조절할 수 있습니다.', category: '사회' },
         { title: '치매 예방에 좋은 생활 습관 5가지', summary: '규칙적인 운동, 균형 잡힌 식사, 사회활동, 두뇌 자극, 충분한 수면이 치매 예방에 도움이 된다고 전문가들이 밝혔습니다.', category: '건강' },
+      ] : [
+        { title: "Today's Weather — Sunny Nationwide, High of 25°C", summary: "Clear skies are expected across the country today. Temperatures will reach a pleasant high of around 25°C.", category: 'Weather' },
+        { title: 'Free Flu Shots Until End of Month — Seniors 65+ Eligible', summary: "The Ministry of Health announced free flu vaccinations for seniors 65 and older through the end of this month. Visit your local health center or a designated clinic.", category: 'Health' },
+        { title: 'Senior Pension Eligibility Expanded — More Seniors to Benefit', summary: "The government has relaxed eligibility criteria for the basic senior pension, allowing more elderly citizens to receive benefits. Applications are available at local community centers.", category: 'Society' },
+        { title: 'Transit Apps Add Large-Text Mode for Seniors', summary: "Major public transit apps have added a large-text mode for older users. Font size can be adjusted in the settings menu.", category: 'Society' },
+        { title: '5 Daily Habits That Help Prevent Dementia', summary: "Experts say regular exercise, a balanced diet, social activity, mental stimulation, and sufficient sleep can all help reduce the risk of dementia.", category: 'Health' },
       ])
     }
     setLoading(false)

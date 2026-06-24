@@ -90,7 +90,7 @@ export default function SOS() {
 
   const RELATIONS = ['배우자', '자녀', '형제', '부모', '친척', '친구', '이웃', '기타']
   const RELATIONS_EN = ['Spouse', 'Child', 'Sibling', 'Parent', 'Relative', 'Friend', 'Neighbor', 'Other']
-  const BLOOD_TYPES = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-', '모름']
+  const BLOOD_TYPES = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-', lang === 'ko' ? '모름' : 'Unknown']
 
   return (
     <>

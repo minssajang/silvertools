@@ -205,7 +205,9 @@ export default function FamilyDashboard() {
           <>
             {tab === 0 && totalDoses > 0 && takenDoses < totalDoses && (
               <div className="alert-box">
-                ⚠️ {selectedSenior.name}님 오늘 {totalDoses - takenDoses}회 미복약
+                ⚠️ {lang === 'ko'
+                  ? `${selectedSenior.name}님 오늘 ${totalDoses - takenDoses}회 미복약`
+                  : `${selectedSenior.name} missed ${totalDoses - takenDoses} dose(s) today`}
               </div>
             )}
             <div className="dash-tabs">

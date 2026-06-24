@@ -154,10 +154,10 @@ export default function Hospital() {
         <div className="section-title">🗺 {lang === 'ko' ? '지도 앱으로 찾기' : 'Open in Map App'}</div>
         <div className="map-btns">
           <button className="map-btn map-btn-kakao" onClick={() => openKakaoMap(category, manualAddr)}>
-            🟡 카카오맵
+            🟡 {lang === 'ko' ? '카카오맵' : 'Kakao Map'}
           </button>
           <button className="map-btn map-btn-naver" onClick={() => openNaverMap(category, manualAddr)}>
-            🟢 네이버지도
+            🟢 {lang === 'ko' ? '네이버지도' : 'Naver Map'}
           </button>
         </div>
 

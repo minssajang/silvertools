@@ -225,7 +225,7 @@ export default function Transit() {
                 style={{ display: 'flex', alignItems: 'center', justify: 'space-between', padding: '14px 16px', background: 'var(--surface)', borderRadius: 12, marginBottom: 8, textDecoration: 'none', color: 'var(--text)', border: '2px solid var(--border)', fontSize: 16, fontWeight: 700, gap: 12 }}>
                 <span style={{ fontSize: 22 }}>📞</span>
                 <span style={{ flex: 1 }}>{c.name}</span>
-                <span style={{ color: ACCENT }}>전화</span>
+                <span style={{ color: ACCENT }}>{lang === 'ko' ? '전화' : 'Call'}</span>
               </a>
             ))}
           </>

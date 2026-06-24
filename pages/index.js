@@ -10,7 +10,7 @@ const TOOLS = [
   {
     href: '/magnifier-down',
     icon: '🔍',
-    name: '돋보기',
+    name: { ko: '돋보기', en: 'Magnifier' },
     desc: { ko: '실시간 확대 · 확대 촬영 · 한자·텍스트 인식', en: 'Live zoom · Capture · OCR & Hanja lookup' },
     color: '#10b981',
     ready: true,
@@ -18,7 +18,7 @@ const TOOLS = [
   {
     href: '/medicine',
     icon: '💊',
-    name: '복약 관리',
+    name: { ko: '복약 관리', en: 'Medicine' },
     desc: { ko: '약 복용 시간 알림 · 복약 기록 관리', en: 'Medication reminders & history' },
     color: '#f59e0b',
     ready: true,
@@ -26,7 +26,7 @@ const TOOLS = [
   {
     href: '/hospital',
     icon: '🏥',
-    name: '병원 찾기',
+    name: { ko: '병원 찾기', en: 'Hospital' },
     desc: { ko: '내 주변 병원·약국 · 진료과목별 검색', en: 'Find nearby hospitals & pharmacies' },
     color: '#3b82f6',
     ready: true,
@@ -34,7 +34,7 @@ const TOOLS = [
   {
     href: '/sos',
     icon: '🆘',
-    name: '긴급 SOS',
+    name: { ko: '긴급 SOS', en: 'Emergency SOS' },
     desc: { ko: '긴급 연락처 등록 · 원터치 SOS 발신', en: 'Emergency contacts · One-touch SOS' },
     color: '#ef4444',
     ready: true,
@@ -42,7 +42,7 @@ const TOOLS = [
   {
     href: '/brain-game',
     icon: '🧠',
-    name: '두뇌 게임',
+    name: { ko: '두뇌 게임', en: 'Brain Games' },
     desc: { ko: '치매 예방 · 기억력·집중력 훈련 게임', en: 'Dementia prevention · Brain training games' },
     color: '#8b5cf6',
     ready: true,
@@ -50,7 +50,7 @@ const TOOLS = [
   {
     href: '/health-record',
     icon: '🩺',
-    name: '건강 기록',
+    name: { ko: '건강 기록', en: 'Health Record' },
     desc: { ko: '혈압·혈당·체중 기록 · 차트로 확인', en: 'Blood pressure, glucose & weight tracking' },
     color: '#ec4899',
     ready: true,
@@ -58,7 +58,7 @@ const TOOLS = [
   {
     href: '/big-news',
     icon: '📰',
-    name: '큰글씨 뉴스',
+    name: { ko: '큰글씨 뉴스', en: 'Large-Print News' },
     desc: { ko: '눈에 편한 큰 글씨로 보는 오늘의 뉴스', en: 'Today\'s news in large, easy-to-read text' },
     color: '#06b6d4',
     ready: true,
@@ -66,7 +66,7 @@ const TOOLS = [
   {
     href: '/transit',
     icon: '🚌',
-    name: '대중교통',
+    name: { ko: '대중교통', en: 'Transit' },
     desc: { ko: '버스·지하철 실시간 도착 · 경로 안내', en: 'Real-time bus & subway arrivals' },
     color: '#f97316',
     ready: true,
@@ -187,7 +187,7 @@ export default function Home() {
                     {tool.icon}
                   </div>
                   <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--text)', marginBottom: 8 }}>
-                    {tool.name}
+                    {tool.name[lang]}
                   </div>
                   <p style={{ fontSize: 14, color: 'var(--text2)', lineHeight: 1.6 }}>
                     {tool.desc[lang]}

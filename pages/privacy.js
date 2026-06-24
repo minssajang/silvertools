@@ -50,7 +50,7 @@ const I18N = {
     sections: [
       {
         title: '1. Information We Collect',
-        content: 'All tools — CardNews Converter, Thumbnail, Sound, Voice, Text, and Clock (Timer) — are available without sign-up. Most tools process the text, images, or audio you provide directly in your browser and do not store it on our servers. However, basic information such as IP address, cookies, visit timestamps, and browser/device information may be collected automatically. Login information is collected only when using the admin tools.',
+        content: 'Most tools — Magnifier, Hospital finder, Emergency SOS, Brain games, Large-print news, and Transit — are available without sign-up. Personal data such as medication history and health records is encrypted and stored securely. However, basic information such as IP address, cookies, visit timestamps, and browser/device information may be collected automatically. Login information is collected only when using account-required features or admin tools.',
       },
       {
         title: '2. Purpose of Collection and Use',
