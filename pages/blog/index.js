@@ -73,7 +73,7 @@ export default function BlogIndex() {
     <div className="light-theme">
       <Head>
         <title>블로그 - Unified Tools</title>
-        <meta name="description" content="YouTube 썸네일, 효과음, 온라인 도구 관련 팁과 정보" />
+        <meta name="description" content="어르신을 위한 스마트폰 활용 팁과 건강 정보" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 

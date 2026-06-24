@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 
 const BASE_TOOLS = [
-  { hint: '썸네일',   label: '🖼 썸네일' },
-  { hint: '효과음',   label: '🔊 효과음' },
+  { hint: '돋보기앱', label: '🔍 돋보기' },
+  { hint: '복약알림앱', label: '💊 복약관리' },
   { hint: '타이머',   label: '⏱ 타이머' },
   { hint: '보이스',   label: '🎤 보이스' },
   { hint: '텍스트',   label: '📝 텍스트' },
@@ -672,7 +672,7 @@ export default function KeywordPanel({ token }) {
             value={addKeyword}
             onChange={e => setAddKeyword(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && handleAdd()}
-            placeholder="예: 유튜브썸네일, 포모도로, 알람"
+            placeholder="예: 어르신돋보기, 복약관리앱, 노인건강"
             style={{
               flex: 1, background: '#27272a', border: '1px solid #3f3f46',
               borderRadius: 8, color: '#f0f0f0', fontSize: 13, padding: '8px 12px',

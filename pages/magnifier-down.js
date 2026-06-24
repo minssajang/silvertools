@@ -540,7 +540,7 @@ export default function MagnifierDown() {
         }
       `}</style>
 
-      <Header lang={lang} onToggleLang={toggleLang} siteName="DownTools" />
+      <Header lang={lang} onToggleLang={toggleLang} siteName="SilverTools" />
 
       <main className="mag-wrap">
 
@@ -741,7 +741,7 @@ export default function MagnifierDown() {
 
       </main>
 
-      <Footer lang={lang} adsOn={adsOn} siteName="DownTools" loaded={settingsLoaded} />
+      <Footer lang={lang} adsOn={adsOn} siteName="SilverTools" loaded={settingsLoaded} />
     </>
   )
 }

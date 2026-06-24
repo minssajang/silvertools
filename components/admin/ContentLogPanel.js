@@ -7,12 +7,12 @@ function nowKST() {
 }
 // 도구 목록 (검색 수요 기준 순서 — 사이트에 새 도구 추가 시 여기에도 추가)
 const TOOLS = [
-  { id: 'thumb-down',    label: '🖼 썸네일' },
-  { id: 'sound-down',    label: '🔊 효과음' },
-  { id: 'clock-down',    label: '⏱ 타이머' },
-  { id: 'voice-down',    label: '🎤 보이스' },
-  { id: 'text-down',     label: '📝 텍스트' },
-  { id: 'cardnews-down', label: '📰 카드뉴스' },
+  { id: 'magnifier-down', label: '🔍 돋보기' },
+  { id: 'medicine',       label: '💊 복약관리' },
+  { id: 'hospital',       label: '🏥 병원찾기' },
+  { id: 'brain-game',     label: '🧠 두뇌게임' },
+  { id: 'health-record',  label: '🩺 건강기록' },
+  { id: 'big-news',       label: '📰 큰글씨뉴스' },
 ]
 const toolLabel = (id) => TOOLS.find(t => t.id === id)?.label || id
 
@@ -25,7 +25,7 @@ export default function ContentLogPanel({ adminToken }) {
   const [promptOpen, setPromptOpen] = useState(false)
 
   // 수동 추가 폼 (보통은 Claude가 작성해주는 내용을 그대로 붙여넣는 용도)
-  const [form, setForm] = useState({ tool: 'cardnews-down', angle: '', title: '', slug: '', memo: '', targetKeyword: '', searchPc: '', searchMobile: '', searchTotal: '', competition: '', publishedAt: nowKST().slice(0,10) })
+  const [form, setForm] = useState({ tool: 'magnifier-down', angle: '', title: '', slug: '', memo: '', targetKeyword: '', searchPc: '', searchMobile: '', searchTotal: '', competition: '', publishedAt: nowKST().slice(0,10) })
   const [saving, setSaving] = useState(false)
   const [pasteText, setPasteText] = useState('')
   const [parseMsg, setParseMsg] = useState('')
@@ -200,7 +200,7 @@ export default function ContentLogPanel({ adminToken }) {
           <textarea
             value={pasteText}
             onChange={e => handlePasteParse(e.target.value)}
-            placeholder={'도구: thumb-down\n키워드 각도: 다운로드 방법\n제목: 유튜브 썸네일 무료 다운로드 방법, 가입 없이 3초만에\n슬러그: youtube-thumbnail-download-free\n발행일: 2026-06-20'}
+            placeholder={'도구: magnifier-down\n키워드 각도: 돋보기 사용법\n제목: 스마트폰 돋보기 무료로 사용하는 방법\n슬러그: smartphone-magnifier-free\n발행일: 2026-06-20'}
             rows={5}
             style={{ ...S.textarea, marginBottom: 6 }}
           />
@@ -235,7 +235,7 @@ export default function ContentLogPanel({ adminToken }) {
           <div style={{ gridColumn: '1 / -1' }}>
             <label style={S.label}>타겟 키워드 (선택)</label>
             <input value={form.targetKeyword} onChange={e => setForm(f => ({ ...f, targetKeyword: e.target.value }))}
-              placeholder="예: 유튜브 썸네일 다운로드" style={S.input} />
+              placeholder="예: 스마트폰 돋보기 사용법" style={S.input} />
           </div>
           <div>
             <label style={S.label}>PC 검색수</label>

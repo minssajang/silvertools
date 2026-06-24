@@ -10,12 +10,14 @@ import { parseMarkdown as parseMd } from '../../lib/parseMarkdown.js'
 
 // 도구 경로 매핑 (블로그 카테고리 코드 → 실제 도구 페이지)
 const TOOL_HREF = {
-  'thumb-down': '/thumb-down',
-  'sound-down': '/sound-down',
-  'clock-down': '/clock-down',
-  'voice-down': '/voice-down',
-  'text-down': '/text-down',
-  'cardnews-down': '/cardnews-down',
+  'magnifier-down': '/magnifier-down',
+  'medicine': '/medicine',
+  'hospital': '/hospital',
+  'sos': '/sos',
+  'brain-game': '/brain-game',
+  'health-record': '/health-record',
+  'big-news': '/big-news',
+  'transit': '/transit',
 }
 
 // ── 관련도 점수 계산: 같은 카테고리(+3), 같은 태그(+2/개), 제목 키워드 겹침(+1/개)
@@ -132,7 +134,7 @@ function ToolCTABlock({ post }) {
       <div style={{ background: 'var(--surface)', border: '2px solid var(--border)', borderRadius: 14, padding: 20, display: 'flex', flexDirection: 'column', gap: 10 }}>
         <div style={{ fontSize: 22 }}>🧰</div>
         <div style={{ fontSize: 15, fontWeight: 700, color: 'var(--text)' }}>다른 도구도 둘러보기</div>
-        <div style={{ fontSize: 13, color: 'var(--text3)', lineHeight: 1.6, flex: 1 }}>썸네일, 효과음, 타이머 등 모든 도구를 무료로 사용하세요</div>
+        <div style={{ fontSize: 13, color: 'var(--text3)', lineHeight: 1.6, flex: 1 }}>돋보기, 복약관리, 병원찾기 등 어르신을 위한 도구를 무료로 사용하세요</div>
         <Link href="/" style={{ display: 'inline-block', padding: '8px 16px', background: 'var(--surface2)', color: 'var(--text)', borderRadius: 8, fontSize: 13, fontWeight: 700, textDecoration: 'none', textAlign: 'center' }}>
           전체 도구 보기 →
         </Link>
@@ -198,24 +200,24 @@ export default function BlogPost() {
   return (
     <div className="light-theme">
       <Head>
-        <title>{post.title} — DownTools</title>
-        <meta name="description" content={post.summary || 'DownTools 블로그 — 카드뉴스, 썸네일, 효과음 등 무료 온라인 도구 활용 팁을 전해드립니다.'} />
+        <title>{post.title} — 실버툴즈</title>
+        <meta name="description" content={post.summary || '실버툴즈 블로그 — 어르신을 위한 스마트폰 활용 팁을 전해드립니다.'} />
 
-        <meta property="og:title" content={`${post.title} — DownTools`} />
-        <meta property="og:description" content={post.summary || 'DownTools 블로그 — 카드뉴스, 썸네일, 효과음 등 무료 온라인 도구 활용 팁을 전해드립니다.'} />
-        <meta property="og:image" content={post.cover_image || 'https://www.downtools.co.kr/og-image.png'} />
+        <meta property="og:title" content={`${post.title} — 실버툴즈`} />
+        <meta property="og:description" content={post.summary || '실버툴즈 블로그 — 어르신을 위한 스마트폰 활용 팁을 전해드립니다.'} />
+        <meta property="og:image" content={post.cover_image || 'https://www.silvertools.co.kr/og-image.png'} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        <meta property="og:url" content={`https://www.downtools.co.kr/blog/${post.slug || ''}`} />
+        <meta property="og:url" content={`https://www.silvertools.co.kr/blog/${post.slug || ''}`} />
         <meta property="og:type" content="article" />
-        <meta property="og:site_name" content="DownTools" />
+        <meta property="og:site_name" content="SilverTools" />
 
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={post.title || 'DownTools'} />
-        <meta name="twitter:description" content={post.summary || 'DownTools 블로그 — 카드뉴스, 썸네일, 효과음 등 무료 온라인 도구 활용 팁을 전해드립니다.'} />
-        <meta name="twitter:image" content={post.cover_image || 'https://www.downtools.co.kr/og-image.png'} />
+        <meta name="twitter:title" content={post.title || 'SilverTools'} />
+        <meta name="twitter:description" content={post.summary || '실버툴즈 블로그 — 어르신을 위한 스마트폰 활용 팁을 전해드립니다.'} />
+        <meta name="twitter:image" content={post.cover_image || 'https://www.silvertools.co.kr/og-image.png'} />
 
-        <link rel="canonical" href={`https://www.downtools.co.kr/blog/${post.slug || ''}`} />
+        <link rel="canonical" href={`https://www.silvertools.co.kr/blog/${post.slug || ''}`} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 

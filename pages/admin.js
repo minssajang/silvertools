@@ -54,7 +54,7 @@ function LoginScreen({ onLogin }) {
         <div style={{ marginBottom: 28 }}>
           <div style={{ width: 44, height: 44, background: '#e63946', borderRadius: 11, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, marginBottom: 16 }}>▶</div>
           <h1 style={{ fontSize: 24, fontWeight: 800, color: '#f0f0f0' }}>Admin</h1>
-          <p style={{ color: '#666', fontSize: 14, marginTop: 4 }}>DownTools 통합 관리자</p>
+          <p style={{ color: '#666', fontSize: 14, marginTop: 4 }}>실버툴즈 통합 관리자</p>
         </div>
         <form onSubmit={submit}>
           <input type="password" placeholder="비밀번호" value={pw} onChange={e => setPw(e.target.value)}
@@ -168,7 +168,7 @@ export default function Admin() {
   return (
     <>
       <Head>
-        <title>Admin - DownTools</title>
+        <title>Admin - 실버툴즈</title>
         <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&display=swap" rel="stylesheet" />
       </Head>
 

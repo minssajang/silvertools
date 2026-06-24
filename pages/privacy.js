@@ -6,14 +6,14 @@ import { findAdSlot } from '../lib/adSlots'
 
 const I18N = {
   ko: {
-    metaTitle: '개인정보처리방침 - DownTools',
-    metaDesc: 'DownTools 개인정보처리방침',
+    metaTitle: '개인정보처리방침 - 실버툴즈',
+    metaDesc: '실버툴즈 개인정보처리방침',
     heading: '개인정보처리방침',
     updated: '시행일: 2026년 6월 20일',
     sections: [
       {
         title: '1. 수집하는 개인정보 항목',
-        content: '카드뉴스 변환, 썸네일, 효과음, 보이스, 텍스트, 클럭(타이머) 등 모든 도구는 별도 회원가입 없이 이용할 수 있습니다. 대부분의 도구는 입력하신 텍스트·이미지·오디오를 브라우저 내에서 처리하며 서버에 저장하지 않습니다. 다만 서비스 이용 과정에서 접속 IP, 쿠키, 방문 일시, 브라우저·기기 정보가 자동으로 수집될 수 있으며, 관리자 도구 이용 시에는 로그인 정보가 수집됩니다.',
+        content: '돋보기, 복약관리, 병원찾기, 긴급SOS 등 대부분의 도구는 별도 회원가입 없이 이용할 수 있습니다. 복약관리·건강기록 등 개인 데이터는 암호화하여 안전하게 저장합니다. 다만 서비스 이용 과정에서 접속 IP, 쿠키, 방문 일시, 브라우저·기기 정보가 자동으로 수집될 수 있으며, 관리자 도구 이용 시에는 로그인 정보가 수집됩니다.',
       },
       {
         title: '2. 개인정보의 수집 및 이용 목적',
@@ -43,8 +43,8 @@ const I18N = {
     note: '본 방침은 관련 법령 및 서비스 정책 변경에 따라 사전 고지 없이 수정될 수 있습니다.',
   },
   en: {
-    metaTitle: 'Privacy Policy - DownTools',
-    metaDesc: 'DownTools Privacy Policy',
+    metaTitle: 'Privacy Policy - SilverTools',
+    metaDesc: 'SilverTools Privacy Policy',
     heading: 'Privacy Policy',
     updated: 'Effective date: June 20, 2026',
     sections: [
@@ -119,7 +119,7 @@ export default function Privacy() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <Header lang={lang} onToggleLang={toggleLang} siteName="DownTools" siteHref="/" />
+      <Header lang={lang} onToggleLang={toggleLang} siteName="SilverTools" siteHref="/" />
 
       <div className="wrap" style={{ paddingTop: 40, paddingBottom: 60 }}>
         <h1 style={{ fontSize: 28, fontWeight: 900, marginBottom: 8 }}>{t.heading}</h1>

@@ -52,7 +52,7 @@ export default function AdminSidebar({ activeTab, onNav, onLogout, mobile, open,
         <div style={{ width: 32, height: 32, background: '#e63946', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>▶</div>
         <div>
           <div style={{ fontSize: 15, fontWeight: 700, color: '#fff' }}>Admin Panel</div>
-          <div style={{ fontSize: 11, color: '#71717a', marginTop: 2 }}>DownTools</div>
+          <div style={{ fontSize: 11, color: '#71717a', marginTop: 2 }}>실버툴즈</div>
         </div>
       </div>
       {mobile && <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#71717a', fontSize: 22, cursor: 'pointer' }}>✕</button>}

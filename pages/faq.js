@@ -6,12 +6,12 @@ import { findAdSlot } from '../lib/adSlots'
 
 const I18N = {
   ko: {
-    metaTitle: 'FAQ - DownTools',
-    metaDesc: 'DownTools 자주 묻는 질문',
+    metaTitle: 'FAQ - 실버툴즈',
+    metaDesc: '실버툴즈 자주 묻는 질문',
     heading: 'FAQ',
     sub: '자주 묻는 질문을 모았습니다',
     faqs: [
-      { q: '모든 도구를 무료로 이용할 수 있나요?', a: '네, 카드뉴스 변환, 썸네일, 효과음, 보이스, 텍스트, 클럭(타이머) 등 모든 도구는 별도 회원가입 없이 무료로 이용하실 수 있습니다.' },
+      { q: '모든 도구를 무료로 이용할 수 있나요?', a: '네, 돋보기, 병원찾기, 긴급SOS, 두뇌게임 등 대부분의 도구는 별도 회원가입 없이 무료로 이용하실 수 있습니다. 복약관리, 건강기록 등 개인 데이터 저장 기능은 회원가입이 필요합니다.' },
       { q: '카드뉴스 변환은 어떻게 하나요?', a: 'HTML 카드뉴스 파일을 변환기 페이지에 드래그하면 PNG 이미지 7장과 슬라이드 영상이 자동으로 생성됩니다. 생성된 이미지는 인스타그램 캐러셀 업로드용으로 바로 사용할 수 있습니다.' },
       { q: '입력한 텍스트나 이미지가 서버에 저장되나요?', a: '대부분의 도구는 브라우저 내에서 처리되며 서버로 전송되거나 저장되지 않습니다. 자세한 내용은 개인정보처리방침을 참고해 주세요.' },
       { q: '회원가입이 꼭 필요한가요?', a: '일반 이용자는 회원가입이 필요하지 않습니다. 관리자(admin) 기능을 사용하는 경우에만 로그인이 필요합니다.' },
@@ -22,10 +22,10 @@ const I18N = {
     ],
   },
   en: {
-    metaTitle: 'FAQ - DownTools',
-    metaDesc: 'DownTools Frequently Asked Questions',
+    metaTitle: 'FAQ - 실버툴즈',
+    metaDesc: 'SilverTools Frequently Asked Questions',
     heading: 'FAQ',
-    sub: 'Answers to common questions about DownTools',
+    sub: 'Answers to common questions about SilverTools',
     faqs: [
       { q: 'Are all tools free to use?', a: 'Yes, all tools — CardNews Converter, Thumbnail, Sound, Voice, Text, and Clock (Timer) — are completely free and require no sign-up.' },
       { q: 'How does the CardNews Converter work?', a: 'Drag an HTML card news file into the converter page, and it automatically generates 7 PNG images plus a slideshow video, ready to upload as an Instagram carousel.' },
@@ -71,7 +71,7 @@ export default function FAQ() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <Header lang={lang} onToggleLang={toggleLang} siteName="DownTools" siteHref="/" />
+      <Header lang={lang} onToggleLang={toggleLang} siteName="SilverTools" siteHref="/" />
 
       <div className="wrap" style={{ paddingTop: 40, paddingBottom: 60 }}>
         <h1 style={{ fontSize: 28, fontWeight: 900, marginBottom: 8 }}>{t.heading}</h1>
