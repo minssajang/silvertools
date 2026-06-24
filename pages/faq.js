@@ -22,7 +22,7 @@ const I18N = {
     ],
   },
   en: {
-    metaTitle: 'FAQ - 실버툴즈',
+    metaTitle: 'FAQ - SilverTools',
     metaDesc: 'SilverTools Frequently Asked Questions',
     heading: 'FAQ',
     sub: 'Answers to common questions about SilverTools',
@@ -109,7 +109,7 @@ export default function FAQ() {
         </div>
       </div>
 
-      <Footer lang={lang} siteName="Unified Tools" adsOn={adsOn} slotData={findAdSlot(adSlots, 'footer')} loaded={settingsLoaded} />
+      <Footer lang={lang} siteName="SilverTools" adsOn={adsOn} slotData={findAdSlot(adSlots, 'footer')} loaded={settingsLoaded} />
     </>
   )
 }

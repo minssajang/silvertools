@@ -32,7 +32,7 @@
 //
 // create table if not exists feature_ideas (
 //   id text primary key,
-//   tool_id text not null,            -- 기능을 추가할 기존 도구 코드 (예: text-down)
+//   tool_id text not null,            -- 기능을 추가할 기존 도구 코드 (예: medicine)
 //   feature_name text not null,       -- 추가할 기능 이름 (예: "맞춤법 검사")
 //   keyword text,                     -- 근거가 된 키워드
 //   pc integer, mobile integer, total integer, competition text,
@@ -61,10 +61,9 @@
 // get_keyword_data는 hint(도구 그룹)로 좁혀서 보고, search_keyword_data는 hint 구분 없이
 // keyword_stats 전체를 본다 — 한 도구를 조사하다 다른 도구에도 쓸만한 키워드가 우연히
 // 걸리는 경우가 많아서, 그런 "예상 못 한 연결"을 놓치지 않으려고 별도로 분리했습니다.
-// (참고: admin 화면 KeywordPanel.js의 hint 표기 — voice-down은 "보이스", text-down은
-// "텍스트" — 가 TOOL_HINTS의 "음성타이핑"/"글자수세기"와 다릅니다. get_keyword_data만 쓰면
-// 이 불일치 때문에 데이터가 안 보일 수 있는데, search_keyword_data는 hint를 안 가리고
-// 전체를 보기 때문에 이 불일치의 영향을 받지 않습니다.)
+// (참고: admin 화면 KeywordPanel.js의 hint 표기가 TOOL_HINTS의 한국어 값과 다를 수 있습니다.
+// get_keyword_data만 쓰면 이 불일치 때문에 데이터가 안 보일 수 있는데, search_keyword_data는
+// hint를 안 가리고 전체를 보기 때문에 이 불일치의 영향을 받지 않습니다.)
 //
 // save_keyword_data가 쓰는 keyword_stats 테이블은 이미 존재합니다
 // (pages/api/tools/keyword-volume.js, keyword-top.js 등 admin API와 공유) —
@@ -74,7 +73,7 @@
 // tool_info 테이블 (Supabase에 최초 1회 생성 필요):
 //
 // create table tool_info (
-//   tool_id text primary key,        -- 예: thumb-down, clock-down ...
+//   tool_id text primary key,        -- 예: magnifier-down, medicine ...
 //   name text,                       -- 도구명, 예: "카드뉴스 변환기"
 //   description text not null,       -- 도구 기능 설명 (도구당 최신 1개, 덮어쓰기 방식)
 //   path text,                       -- 경로, 예: /cardnews-down
@@ -91,7 +90,7 @@
 //   MCP_SHARED_SECRET                          - 이 MCP 서버 보호용 공유 비밀키 (직접 정해서 등록)
 //
 // claude.ai 커넥터 등록 주소 (Settings > Connectors > Add custom connector):
-//   https://cardnews-converter.vercel.app/api/mcp?key=여기에_MCP_SHARED_SECRET_값
+//   https://www.silvertools.co.kr/api/mcp?key=여기에_MCP_SHARED_SECRET_값
 //
 // ⚠️ 이 파일은 원래 app/.well-known/oauth-authorization-server/route.js 에
 // 잘못된 경로로 들어가 있었습니다 (해당 경로는 실제로는 OAuth 메타데이터 전용
@@ -110,12 +109,14 @@ const supabase = createClient(
 )
 
 const TOOL_HINTS = {
-  'thumb-down':    '썸네일',
-  'sound-down':    '효과음',
-  'clock-down':    '타이머',
-  'voice-down':    '음성타이핑',
-  'text-down':     '글자수세기',
-  'cardnews-down': '카드뉴스',
+  'magnifier-down': '돋보기',
+  'medicine':       '복약관리',
+  'hospital':       '병원찾기',
+  'sos':            '긴급SOS',
+  'brain-game':     '두뇌게임',
+  'health-record':  '건강기록',
+  'big-news':       '큰글씨뉴스',
+  'transit':        '대중교통',
 }
 const TOOL_CODES = Object.keys(TOOL_HINTS)
 
@@ -383,7 +384,7 @@ const baseHandler = createMcpHandler(
           mobile: z.number().optional(),
           total: z.number().optional(),
           competition: z.string().optional(),
-          memo: z.string().optional().describe('어떤 글로 연결할지 계획 메모. 예: "text-down 맞춤법검사기 연계 글로 쓰면 좋음"'),
+          memo: z.string().optional().describe('어떤 글로 연결할지 계획 메모. 예: "medicine 복약 간격 설정 기능 연계 글로 쓰면 좋음"'),
         },
         annotations: { destructiveHint: false, idempotentHint: true },
       },
@@ -544,7 +545,7 @@ const baseHandler = createMcpHandler(
         const { data, error } = await supabase.from('blog_posts').insert([row]).select().single()
         if (error) return { content: [{ type: 'text', text: `오류: ${error.message}` }], isError: true }
         const liveNote = finalStatus === 'published'
-          ? `✅ 발행 완료 — https://cardnews-converter.vercel.app/blog/${slug} 에서 바로 확인 가능`
+          ? `✅ 발행 완료 — https://www.silvertools.co.kr/blog/${slug} 에서 바로 확인 가능`
           : `✅ ${finalStatus === 'draft' ? '임시저장(draft)' : '예약(scheduled)'} 완료 — admin에서 확인 필요`
         return { content: [{ type: 'text', text: liveNote }] }
       }
@@ -596,7 +597,7 @@ const baseHandler = createMcpHandler(
         return {
           content: [{
             type: 'text',
-            text: `✅ 수정 완료\n제목: ${data.title}\nslug: ${data.slug}\n변경 필드: ${changedFields}\n라이브 URL: https://cardnews-converter.vercel.app/blog/${data.slug}`,
+            text: `✅ 수정 완료\n제목: ${data.title}\nslug: ${data.slug}\n변경 필드: ${changedFields}\n라이브 URL: https://www.silvertools.co.kr/blog/${data.slug}`,
           }],
         }
       }
@@ -641,7 +642,7 @@ const baseHandler = createMcpHandler(
           tool_id: z.enum(TOOL_CODES).describe('도구 코드'),
           description: z.string().describe('갱신할 전체 기능 설명'),
           name: z.string().optional().describe('도구명 (선택, 비우면 기존 값 유지)'),
-          path: z.string().optional().describe('도구 경로, 예: /cardnews-down (선택, 비우면 기존 값 유지)'),
+          path: z.string().optional().describe('도구 경로, 예: /magnifier-down (선택, 비우면 기존 값 유지)'),
         },
         annotations: { destructiveHint: false, idempotentHint: true },
       },

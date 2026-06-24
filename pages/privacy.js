@@ -143,7 +143,7 @@ export default function Privacy() {
         )}
       </div>
 
-      <Footer lang={lang} siteName="Unified Tools" adsOn={adsOn} slotData={findAdSlot(adSlots, 'footer')} loaded={loaded} />
+      <Footer lang={lang} siteName="SilverTools" adsOn={adsOn} slotData={findAdSlot(adSlots, 'footer')} loaded={loaded} />
     </>
   )
 }

@@ -53,7 +53,7 @@ export default function Login() {
         body: JSON.stringify({ action: mode === 'login' ? 'login' : 'register', phone, password, name })
       })
       const data = await res.json()
-      if (!res.ok) { setError(data.error || '오류가 발생했습니다'); setLoading(false); return }
+      if (!res.ok) { setError(data.error || (lang === 'ko' ? '오류가 발생했습니다' : 'An error occurred')); setLoading(false); return }
 
       saveSession(data.user, data.session)
       router.push('/')
@@ -93,7 +93,7 @@ export default function Login() {
       <main className="login-wrap">
         <div className="login-card">
           <div className="login-logo">🌿</div>
-          <div className="login-title">실버툴즈</div>
+          <div className="login-title">{lang === 'ko' ? '실버툴즈' : 'SilverTools'}</div>
           <div className="login-sub">{lang === 'ko' ? '어르신을 위한 스마트폰 도우미' : 'Smart tools for seniors'}</div>
 
           <div className="mode-tabs">

@@ -276,12 +276,14 @@ export default function FamilyDashboard() {
                 {sosData.contacts.length === 0 && <div className="empty"><div style={{ fontSize: 40 }}>📞</div><div style={{ marginTop: 10 }}>{lang === 'ko' ? '등록된 연락처 없음' : 'No contacts'}</div></div>}
                 <div style={{ background: 'var(--surface)', borderRadius: 14, padding: 16, marginTop: 16 }}>
                   {[
-                    { key: 'name', label: '이름' }, { key: 'birth', label: '생년월일' },
-                    { key: 'blood_type', label: '혈액형' }, { key: 'disease', label: '기저질환' },
-                    { key: 'allergy', label: '알레르기' },
+                    { key: 'name', ko: '이름', en: 'Name' },
+                    { key: 'birth', ko: '생년월일', en: 'Date of Birth' },
+                    { key: 'blood_type', ko: '혈액형', en: 'Blood Type' },
+                    { key: 'disease', ko: '기저질환', en: 'Conditions' },
+                    { key: 'allergy', ko: '알레르기', en: 'Allergies' },
                   ].map(f => (
                     <div key={f.key} className="myinfo-row">
-                      <span style={{ color: 'var(--text2)', fontWeight: 600 }}>{f.label}</span>
+                      <span style={{ color: 'var(--text2)', fontWeight: 600 }}>{lang === 'ko' ? f.ko : f.en}</span>
                       <span style={{ fontWeight: 700 }}>{sosData.myInfo[f.key] || (lang === 'ko' ? '미입력' : 'Not set')}</span>
                     </div>
                   ))}
