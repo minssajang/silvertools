@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { getUser, authFetch } from '../lib/useAuth'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import Header from '../components/Header'
@@ -54,7 +55,7 @@ export default function ScreenShare() {
 
     try {
       // 1. 방 생성 → 코드 받기
-      const res = await fetch('/api/silver/signal', {
+      const res = await authFetch('/api/silver/signal', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'create', host_id: user.id })
       })
@@ -91,7 +92,7 @@ export default function ScreenShare() {
       // 4. ICE candidate 수집 → 서버에 저장
       pc.onicecandidate = async (e) => {
         if (!e.candidate) return
-        await fetch('/api/silver/signal', {
+        await authFetch('/api/silver/signal', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ action: 'add_ice', share_code: code, candidate: e.candidate, role: 'host' })
         })
@@ -100,14 +101,14 @@ export default function ScreenShare() {
       // 5. offer 생성 → 서버에 저장
       const offer = await pc.createOffer()
       await pc.setLocalDescription(offer)
-      await fetch('/api/silver/signal', {
+      await authFetch('/api/silver/signal', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'set_offer', share_code: code, offer: JSON.stringify(offer) })
       })
 
       // 6. 자녀가 answer 보낼 때까지 폴링
       pollRef.current = setInterval(async () => {
-        const r = await fetch('/api/silver/signal', {
+        const r = await authFetch('/api/silver/signal', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ action: 'get', share_code: code })
         })
@@ -141,7 +142,7 @@ export default function ScreenShare() {
   const endShare = async (code) => {
     const c = code || shareCode
     if (c) {
-      await fetch('/api/silver/signal', {
+      await authFetch('/api/silver/signal', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'end', share_code: c })
       })
