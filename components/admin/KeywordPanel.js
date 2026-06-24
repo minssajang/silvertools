@@ -266,8 +266,9 @@ export default function KeywordPanel({ token }) {
     setPicksLoading(true)
     try {
       const res = await fetch('/api/tools/keyword-picks', { headers: { 'x-admin-token': token } })
-      setPicks(await res.json())
-    } catch (e) { console.error(e) }
+      const data = await res.json()
+      setPicks(Array.isArray(data) ? data : [])
+    } catch (e) { console.error(e); setPicks([]) }
     setPicksLoading(false)
   }
 
@@ -278,7 +279,7 @@ export default function KeywordPanel({ token }) {
     try {
       const res = await fetch(`/api/tools/keyword-all?limit=${lim || allKwLimit}`, { headers: { 'x-admin-token': token } })
       const data = await res.json()
-      setAllKeywords(data.results || [])
+      setAllKeywords(Array.isArray(data.results) ? data.results : [])
       setAllKwLoaded(true)
     } catch (e) { console.error(e) }
     setAllKwLoading(false)
@@ -292,7 +293,7 @@ export default function KeywordPanel({ token }) {
         headers: { 'x-admin-token': token },
       })
       const data = await res.json()
-      setGoldenKeywords(data.results || [])
+      setGoldenKeywords(Array.isArray(data.results) ? data.results : [])
       setGoldenLoaded(true)
     } catch (e) { console.error(e) }
     setGoldenLoading(false)
