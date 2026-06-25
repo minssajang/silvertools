@@ -51,18 +51,15 @@ export default function App({ Component, pageProps }) {
         {/* 검색엔진 인증 */}
         <meta name="google-site-verification" content="828Mf-hRlCpwvG4M6VOXjZidjk3eV0a5Pe4OVnXhq0Y" />
         <meta name="google-site-verification" content="wmEuMs0GN6krWw8tY9eziKXjvvN4nROS0D_6s6j4-vY" />
-        <meta name="naver-site-verification" content="dfbbcee12253fc4ee1e515ef849d1e6c42039a2c" />
-        {/* Yandex 인증 — 사용 시 아래 주석 해제
-        <meta name="yandex-verification" content="YOUR_YANDEX_VERIFICATION_CODE" />
-        */}
+        <meta name="naver-site-verification" content="c684c5f62177e061e405ce1be7874e0c2b52650b" />
+        <meta name="yandex-verification" content="a82be56a5e332038" />
 
-        {/* Google AdSense — 실제 ID 발급 후 아래 주석 해제
+        {/* Google AdSense */}
         <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=YOUR_ADSENSE_CLIENT_ID"
           crossOrigin="anonymous"
         />
-        */}
 
         {/* Google Analytics */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-1FRFSVVNNZ" />
