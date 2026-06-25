@@ -359,16 +359,16 @@ export default function BlogAdminPanel({ adminToken, initialView }) {
     saveChecklist(checklistChecks, next)
   }
 
-  // ── 달력 계산
-  const now = nowKSTDate()
-  const year = now.getFullYear(), month = now.getMonth(), today = now.getDate()
+  // ── 달력 계산 (KST 기준 ISO slice로 날짜 추출 — 브라우저 타임존 영향 없음)
+  const _kstIso = new Date(Date.now() + 9*60*60*1000).toISOString()
+  const year = parseInt(_kstIso.slice(0,4),10), month = parseInt(_kstIso.slice(5,7),10)-1, today = parseInt(_kstIso.slice(8,10),10)
   const firstDay = new Date(year,month,1).getDay()
   const daysInMonth = new Date(year,month+1,0).getDate()
   const monthStr = `${year}-${String(month+1).padStart(2,'0')}`
   const dailyCount = {}
   posts.forEach(p => {
-    if (p.status === 'published' && p.created_at) {
-      const ds = p.created_at.slice(0,10)
+    if (p.status === 'published' && (p.published_at || p.created_at)) {
+      const ds = new Date(new Date(p.published_at || p.created_at).getTime() + 9*60*60*1000).toISOString().slice(0,10)
       if (ds.startsWith(monthStr)) dailyCount[parseInt(ds.slice(8,10))] = (dailyCount[parseInt(ds.slice(8,10))]||0)+1
     }
   })
@@ -605,7 +605,7 @@ export default function BlogAdminPanel({ adminToken, initialView }) {
                             <div style={{ fontSize:12, fontWeight:isToday?700:400, color:isToday?'#fff':'#aaa' }}>{d}</div>
                             {isMonthly&&!isToday&&<div style={{ fontSize:8, color:'#d97706', lineHeight:1 }}>월간</div>}
                             {isWeekly&&!isToday&&<div style={{ fontSize:8, color:'#0891b2', lineHeight:1 }}>주간</div>}
-                            {cnt>0&&<div style={{ fontSize:9, fontWeight:700, color:'#e63946', background:isToday?'#fff':'#2a0a0a', borderRadius:3, padding:'0 3px', lineHeight:'14px' }}>{cnt}</div>}
+                            {cnt>0&&<div style={{ fontSize:9, fontWeight:700, color:isToday?'#e63946':'#e63946', background:isToday?'#fff':'#2a0a0a', borderRadius:3, padding:'0 3px', lineHeight:'14px' }}>{cnt}</div>}
                           </div>
                         )
                       })}
@@ -697,13 +697,13 @@ export default function BlogAdminPanel({ adminToken, initialView }) {
                           {post.status==='published'?'✅ 발행':post.status==='scheduled'?'⏰ 예약':'📝 임시'}
                         </span>
                         {post.status==='scheduled' && post.scheduled_at && (
-                          <span style={{ fontSize:11, color:'#60a5fa' }}>{new Date(post.scheduled_at).toLocaleString('ko-KR')}</span>
+                          <span style={{ fontSize:11, color:'#60a5fa' }}>{new Date(new Date(post.scheduled_at).getTime() + 9*60*60*1000).toISOString().slice(0,16).replace('T',' ')}</span>
                         )}
                         {post.category && <span style={{ fontSize:11, color:'#888', background:'#1f1f1f', borderRadius:4, padding:'2px 8px', border:'1px solid #2a2a2a' }}>{post.category}</span>}
                       </div>
                       <div style={{ fontSize:15, fontWeight:700, color:'#f0f0f0', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap', marginBottom:3 }}>{post.title}</div>
                       <div style={{ fontSize:12, color:'#555' }}>
-                        {post.created_at ? new Date(post.created_at).toLocaleDateString('ko-KR') : ''}
+                        {(post.published_at || post.created_at) ? new Date(new Date(post.published_at || post.created_at).getTime() + 9*60*60*1000).toISOString().slice(0,10).replace(/-/g,'. ') + '.' : ''}
                         {post.slug && <span style={{ marginLeft:8, opacity:0.5 }}>/blog/{post.slug}</span>}
                       </div>
                     </div>
