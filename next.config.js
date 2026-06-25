@@ -1,25 +1,24 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ['google-auth-library', 'google-logging-utils', 'gcp-metadata'],
-  },
   reactStrictMode: true,
   images: {
-    domains: ['images.unsplash.com', 'plus.unsplash.com'],
+    domains: [
+      'images.unsplash.com',
+      'plus.unsplash.com',
+    ],
     remotePatterns: [
-      { protocol: 'https', hostname: 'images.unsplash.com' },
-      { protocol: 'https', hostname: 'plus.unsplash.com' },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'plus.unsplash.com',
+      },
     ],
   },
   webpack(config, { isServer }) {
     if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        child_process: false,
-        net: false,
-        tls: false,
-      }
       config.optimization.splitChunks = {
         ...config.optimization.splitChunks,
         chunks: 'all',
@@ -37,12 +36,14 @@ const nextConfig = {
     }
     return config
   },
+
   async rewrites() {
     return [
       { source: '/sitemap.xml', destination: '/api/sitemap.xml' },
       { source: '/robots.txt',  destination: '/api/robots.txt'  },
     ]
   },
+
   async redirects() {
     return [
       {
@@ -53,14 +54,16 @@ const nextConfig = {
       },
     ]
   },
+
   async headers() {
     return [
       {
+        // 블로그 페이지에서 Unsplash 이미지 로드 허용
         source: '/blog/:path*',
         headers: [
           {
             key: 'Content-Security-Policy',
-            value: "img-src 'self' data: https://images.unsplash.com https://plus.unsplash.com;",
+            value: "img-src 'self' data: https://images.unsplash.com https://plus.unsplash.com ;",
           },
         ],
       },
