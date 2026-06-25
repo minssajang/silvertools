@@ -90,7 +90,7 @@
 //   MCP_SHARED_SECRET                          - 이 MCP 서버 보호용 공유 비밀키 (직접 정해서 등록)
 //
 // claude.ai 커넥터 등록 주소 (Settings > Connectors > Add custom connector):
-//   https://www.silvertools.co.kr/api/mcp?key=여기에_MCP_SHARED_SECRET_값
+//   https://www.silvertools.kr/api/mcp?key=여기에_MCP_SHARED_SECRET_값
 //
 // ⚠️ 이 파일은 원래 app/.well-known/oauth-authorization-server/route.js 에
 // 잘못된 경로로 들어가 있었습니다 (해당 경로는 실제로는 OAuth 메타데이터 전용
@@ -553,7 +553,7 @@ const baseHandler = createMcpHandler(
         const indexingResult = { googleIndexing: null, indexNow: null }
 
         if (finalStatus === 'published') {
-          const pageUrl = `https://www.silvertools.co.kr/blog/${slug}`
+          const pageUrl = `https://www.silvertools.kr/blog/${slug}`
 
           // 1) Google Indexing API
           try {
@@ -583,9 +583,9 @@ const baseHandler = createMcpHandler(
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json; charset=utf-8' },
                 body: JSON.stringify({
-                  host: 'www.silvertools.co.kr',
+                  host: 'www.silvertools.kr',
                   key: INDEXNOW_KEY,
-                  keyLocation: `https://www.silvertools.co.kr/${INDEXNOW_KEY}.txt`,
+                  keyLocation: `https://www.silvertools.kr/${INDEXNOW_KEY}.txt`,
                   urlList: [pageUrl],
                 }),
               })
@@ -602,7 +602,7 @@ const baseHandler = createMcpHandler(
         // ────────────────────────────────────────────────────────────────────
 
         const liveNote = finalStatus === 'published'
-          ? `✅ 발행 완료 — https://www.silvertools.co.kr/blog/${slug} 에서 바로 확인 가능`
+          ? `✅ 발행 완료 — https://www.silvertools.kr/blog/${slug} 에서 바로 확인 가능`
           : `✅ ${finalStatus === 'draft' ? '임시저장(draft)' : '예약(scheduled)'} 완료 — admin에서 확인 필요`
 
         const indexNote = finalStatus === 'published'
@@ -659,7 +659,7 @@ const baseHandler = createMcpHandler(
         return {
           content: [{
             type: 'text',
-            text: `✅ 수정 완료\n제목: ${data.title}\nslug: ${data.slug}\n변경 필드: ${changedFields}\n라이브 URL: https://www.silvertools.co.kr/blog/${data.slug}`,
+            text: `✅ 수정 완료\n제목: ${data.title}\nslug: ${data.slug}\n변경 필드: ${changedFields}\n라이브 URL: https://www.silvertools.kr/blog/${data.slug}`,
           }],
         }
       }

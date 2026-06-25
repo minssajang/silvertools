@@ -105,7 +105,7 @@ export default async function handler(req, res) {
     const indexingResult = { googleIndexing: null, indexNow: null }
 
     if (status === 'published' && postType === 'blog') {
-      const pageUrl = `https://www.silvertools.co.kr/blog/${slug}`
+      const pageUrl = `https://www.silvertools.kr/blog/${slug}`
 
       // 1) Google Indexing API
       try {
@@ -135,9 +135,9 @@ export default async function handler(req, res) {
             method: 'POST',
             headers: { 'Content-Type': 'application/json; charset=utf-8' },
             body: JSON.stringify({
-              host: 'www.silvertools.co.kr',
+              host: 'www.silvertools.kr',
               key: INDEXNOW_KEY,
-              keyLocation: `https://www.silvertools.co.kr/${INDEXNOW_KEY}.txt`,
+              keyLocation: `https://www.silvertools.kr/${INDEXNOW_KEY}.txt`,
               urlList: [pageUrl],
             }),
           })

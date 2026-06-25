@@ -49,7 +49,7 @@ const nextConfig = {
       {
         source: '/:path*',
         has: [{ type: 'header', key: 'x-forwarded-proto', value: 'http' }],
-        destination: 'https://www.silvertools.co.kr/:path*',
+        destination: 'https://www.silvertools.kr/:path*',
         permanent: true,
       },
     ]
