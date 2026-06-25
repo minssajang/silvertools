@@ -100,7 +100,71 @@ export default async function handler(req, res) {
     const { data, error } = await supabase.from('blog_posts').insert([row]).select().single()
     if (error) return res.status(500).json({ error: error.message })
     const { secret_password: _pw, ...safeData } = data
-    return res.status(200).json(safeData)
+
+    // Google Indexing API + IndexNow — 블로그 글 published 발행 즉시 색인 요청
+    const indexingResult = { googleIndexing: null, indexNow: null }
+
+    if (status === 'published' && postType === 'blog') {
+      const pageUrl = `https://www.silvertools.co.kr/blog/${slug}`
+
+      // 1) Google Indexing API
+      try {
+        const { GoogleAuth } = require('google-auth-library')
+        const auth = new GoogleAuth({
+          credentials: JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON),
+          scopes: ['https://www.googleapis.com/auth/indexing'],
+        })
+        const client = await auth.getClient()
+        await client.request({
+          url: 'https://indexing.googleapis.com/v3/urlNotifications:publish',
+          method: 'POST',
+          data: { url: pageUrl, type: 'URL_UPDATED' },
+        })
+        console.log('[Indexing API] 색인 요청 완료:', slug)
+        indexingResult.googleIndexing = 'success'
+      } catch (e) {
+        console.error('[Indexing API] 오류:', e.message)
+        indexingResult.googleIndexing = 'error: ' + e.message
+      }
+
+      // 2) IndexNow — Bing·Naver·Yandex 색인 요청
+      try {
+        const INDEXNOW_KEY = process.env.INDEXNOW_KEY || ''
+        if (INDEXNOW_KEY) {
+          const inRes = await fetch('https://api.indexnow.org/indexnow', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json; charset=utf-8' },
+            body: JSON.stringify({
+              host: 'www.silvertools.co.kr',
+              key: INDEXNOW_KEY,
+              keyLocation: `https://www.silvertools.co.kr/${INDEXNOW_KEY}.txt`,
+              urlList: [pageUrl],
+            }),
+          })
+          console.log('[IndexNow] 핑 전송 완료:', slug, '상태:', inRes.status)
+          indexingResult.indexNow = 'success:' + inRes.status
+        } else {
+          indexingResult.indexNow = 'skipped: INDEXNOW_KEY 미설정'
+        }
+      } catch (e) {
+        console.error('[IndexNow] 오류:', e.message)
+        indexingResult.indexNow = 'error: ' + e.message
+      }
+
+      // 색인 결과를 content_log에 저장 (slug 기준)
+      try {
+        await supabase.from('content_log')
+          .update({
+            google_indexing: indexingResult.googleIndexing || null,
+            index_now: indexingResult.indexNow || null,
+          })
+          .eq('slug', slug)
+      } catch (e) {
+        console.error('[content_log 색인 기록] 오류:', e.message)
+      }
+    }
+
+    return res.status(200).json({ ...safeData, _indexing: indexingResult })
   }
 
   // PUT - 수정 (admin only)
