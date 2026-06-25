@@ -97,6 +97,7 @@ export default function HealthRecord() {
   return (
     <>
       <Head>
+        <link rel="canonical" href="https://www.silvertools.kr/health-record/" />
         <title>{lang === 'ko' ? '건강 기록 — 실버툴즈' : 'Health Record — SilverTools'}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
       </Head>

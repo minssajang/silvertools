@@ -103,6 +103,7 @@ export default function BigNews() {
   return (
     <>
       <Head>
+        <link rel="canonical" href="https://www.silvertools.kr/big-news/" />
         <title>{lang === 'ko' ? '큰글씨 뉴스 — 실버툴즈' : 'Large Print News — SilverTools'}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
       </Head>

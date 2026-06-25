@@ -66,6 +66,7 @@ export default function FAQ() {
   return (
     <>
       <Head>
+        <link rel="canonical" href="https://www.silvertools.kr/faq/" />
         <title>{t.metaTitle}</title>
         <meta name="description" content={t.metaDesc} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />

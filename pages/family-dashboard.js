@@ -117,6 +117,7 @@ export default function FamilyDashboard() {
   return (
     <>
       <Head>
+        <link rel="canonical" href="https://www.silvertools.kr/family-dashboard/" />
         <title>{lang === 'ko' ? '가족 대시보드 — 실버툴즈' : 'Family Dashboard — SilverTools'}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
       </Head>

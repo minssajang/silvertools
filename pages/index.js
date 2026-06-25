@@ -134,7 +134,7 @@ export default function Home() {
         <meta name="twitter:title" content={t.metaTitle} />
         <meta name="twitter:description" content={t.metaDesc} />
         <meta name="twitter:image" content="https://www.silvertools.kr/og-image.png" />
-        <link rel="canonical" href="https://www.silvertools.co.kr/" />
+        <link rel="canonical" href="https://www.silvertools.kr/" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 

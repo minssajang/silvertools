@@ -66,6 +66,7 @@ export default function Login() {
   return (
     <>
       <Head>
+        <link rel="canonical" href="https://www.silvertools.kr/login/" />
         <title>{lang === 'ko' ? '로그인 — 실버툴즈' : 'Login — SilverTools'}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
       </Head>

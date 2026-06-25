@@ -255,6 +255,7 @@ export default function BrainGame() {
   return (
     <>
       <Head>
+        <link rel="canonical" href="https://www.silvertools.kr/brain-game/" />
         <title>{lang === 'ko' ? '두뇌 게임 — 실버툴즈' : 'Brain Games — SilverTools'}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
       </Head>

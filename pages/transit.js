@@ -79,6 +79,7 @@ export default function Transit() {
   return (
     <>
       <Head>
+        <link rel="canonical" href="https://www.silvertools.kr/transit/" />
         <title>{lang === 'ko' ? '대중교통 — 실버툴즈' : 'Public Transit — SilverTools'}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
       </Head>

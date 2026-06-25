@@ -71,6 +71,7 @@ export default function Terms() {
   return (
     <>
       <Head>
+        <link rel="canonical" href="https://www.silvertools.kr/terms/" />
         <title>{t.metaTitle}</title>
         <meta name="description" content={t.metaDesc} />
       </Head>

@@ -123,6 +123,7 @@ export default function Medicine() {
   return (
     <>
       <Head>
+        <link rel="canonical" href="https://www.silvertools.kr/medicine/" />
         <title>{lang === 'ko' ? '복약 관리 — 실버툴즈' : 'Medicine Manager — SilverTools'}</title>
         <meta name="description" content={lang === 'ko' ? '약 복용 시간 알림과 복약 기록을 관리하세요.' : 'Manage medication reminders and history.'} />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />

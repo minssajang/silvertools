@@ -251,6 +251,7 @@ export default function MagnifierDown() {
   return (
     <>
       <Head>
+        <link rel="canonical" href="https://www.silvertools.kr/magnifier-down/" />
         <title>{t.metaTitle}</title>
         <meta name="description" content={t.metaDesc} />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />

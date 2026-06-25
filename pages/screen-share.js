@@ -154,6 +154,7 @@ export default function ScreenShare() {
   return (
     <>
       <Head>
+        <link rel="canonical" href="https://www.silvertools.kr/screen-share/" />
         <title>{lang === 'ko' ? '화면공유 — 실버툴즈' : 'Screen Share — SilverTools'}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
       </Head>

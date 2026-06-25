@@ -92,6 +92,7 @@ export default function Hospital() {
   return (
     <>
       <Head>
+        <link rel="canonical" href="https://www.silvertools.kr/hospital/" />
         <title>{lang === 'ko' ? '병원 찾기 — 실버툴즈' : 'Hospital Finder — SilverTools'}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
       </Head>

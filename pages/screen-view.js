@@ -129,6 +129,7 @@ export default function ScreenView() {
   return (
     <>
       <Head>
+        <link rel="canonical" href="https://www.silvertools.kr/screen-view/" />
         <title>{lang === 'ko' ? '화면보기 — 실버툴즈' : 'Screen View — SilverTools'}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
       </Head>

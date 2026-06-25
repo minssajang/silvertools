@@ -102,6 +102,7 @@ export default function SOS() {
   return (
     <>
       <Head>
+        <link rel="canonical" href="https://www.silvertools.kr/sos/" />
         <title>{lang === 'ko' ? '긴급 SOS — 실버툴즈' : 'Emergency SOS — SilverTools'}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
       </Head>
