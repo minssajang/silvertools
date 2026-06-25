@@ -1,4 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;900&display=swap');
+/* 폰트는 _app.js <link>로 이동 — 렌더링 차단 방지 */
+
+/* 폰트 로딩 중 레이아웃 밀림(CLS) 방지 */
+@font-face {
+  font-family: 'Outfit';
+  font-display: swap;
+}
 
 :root {
   --bg: #0c0c0c;

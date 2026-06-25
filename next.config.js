@@ -22,14 +22,32 @@ const nextConfig = {
       config.optimization.splitChunks = {
         ...config.optimization.splitChunks,
         chunks: 'all',
+        minSize: 20000,
+        maxSize: 244000,
         cacheGroups: {
           ...config.optimization.splitChunks?.cacheGroups,
+          // 관리자 컴포넌트 — 일반 사용자에게 로드 안 됨
           admin: {
             test: /[\\/]components[\\/]admin[\\/]/,
             name: 'admin',
             chunks: 'all',
             priority: 30,
             enforce: true,
+          },
+          // React 등 공통 프레임워크 분리
+          framework: {
+            test: /[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/,
+            name: 'framework',
+            chunks: 'all',
+            priority: 40,
+            enforce: true,
+          },
+          // 나머지 node_modules 분리
+          vendors: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+            priority: 20,
           },
         },
       }
