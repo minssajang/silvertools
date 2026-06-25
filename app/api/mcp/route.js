@@ -477,10 +477,12 @@ const baseHandler = createMcpHandler(
           search_mobile: z.number().optional().describe('네이버 모바일 월간 검색수'),
           search_total: z.number().optional().describe('PC+모바일 합계 검색수'),
           competition: z.string().optional().describe('경쟁도 (높음/중간/낮음)'),
+          google_indexing: z.string().optional().describe('Google 색인 요청 결과 (success / error: ...)'),
+          index_now: z.string().optional().describe('IndexNow 핑 전송 결과 (success:200 / error: ...)'),
         },
         annotations: { destructiveHint: false, idempotentHint: false },
       },
-      async ({ tool, angle, title, slug, memo, target_keyword, search_pc, search_mobile, search_total, competition }) => {
+      async ({ tool, angle, title, slug, memo, target_keyword, search_pc, search_mobile, search_total, competition, google_indexing, index_now }) => {
         const row = {
           id: Date.now().toString(36) + Math.random().toString(36).slice(2),
           tool, angle, title, slug,
@@ -490,6 +492,8 @@ const baseHandler = createMcpHandler(
           search_mobile: search_mobile != null ? Number(search_mobile) : null,
           search_total: search_total != null ? Number(search_total) : null,
           competition: competition || null,
+          google_indexing: google_indexing || null,
+          index_now: index_now || null,
           published_at: null,
           created_at: nowKST(),
         }
@@ -544,10 +548,68 @@ const baseHandler = createMcpHandler(
         }
         const { data, error } = await supabase.from('blog_posts').insert([row]).select().single()
         if (error) return { content: [{ type: 'text', text: `오류: ${error.message}` }], isError: true }
+
+        // ── 색인 요청 (published 상태일 때만) ──────────────────────────────
+        const indexingResult = { googleIndexing: null, indexNow: null }
+
+        if (finalStatus === 'published') {
+          const pageUrl = `https://www.silvertools.co.kr/blog/${slug}`
+
+          // 1) Google Indexing API
+          try {
+            const { GoogleAuth } = await import('google-auth-library')
+            const auth = new GoogleAuth({
+              credentials: JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON),
+              scopes: ['https://www.googleapis.com/auth/indexing'],
+            })
+            const client = await auth.getClient()
+            await client.request({
+              url: 'https://indexing.googleapis.com/v3/urlNotifications:publish',
+              method: 'POST',
+              data: { url: pageUrl, type: 'URL_UPDATED' },
+            })
+            console.log('[MCP Indexing API] 색인 요청 완료:', slug)
+            indexingResult.googleIndexing = 'success'
+          } catch (e) {
+            console.error('[MCP Indexing API] 오류:', e.message)
+            indexingResult.googleIndexing = 'error: ' + e.message
+          }
+
+          // 2) IndexNow — Bing·Naver·Yandex 색인 요청
+          try {
+            const INDEXNOW_KEY = process.env.INDEXNOW_KEY || ''
+            if (INDEXNOW_KEY) {
+              const inRes = await fetch('https://api.indexnow.org/indexnow', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json; charset=utf-8' },
+                body: JSON.stringify({
+                  host: 'www.silvertools.co.kr',
+                  key: INDEXNOW_KEY,
+                  keyLocation: `https://www.silvertools.co.kr/${INDEXNOW_KEY}.txt`,
+                  urlList: [pageUrl],
+                }),
+              })
+              console.log('[MCP IndexNow] 핑 전송 완료:', slug, '상태:', inRes.status)
+              indexingResult.indexNow = 'success:' + inRes.status
+            } else {
+              indexingResult.indexNow = 'skipped: INDEXNOW_KEY 미설정'
+            }
+          } catch (e) {
+            console.error('[MCP IndexNow] 오류:', e.message)
+            indexingResult.indexNow = 'error: ' + e.message
+          }
+        }
+        // ────────────────────────────────────────────────────────────────────
+
         const liveNote = finalStatus === 'published'
           ? `✅ 발행 완료 — https://www.silvertools.co.kr/blog/${slug} 에서 바로 확인 가능`
           : `✅ ${finalStatus === 'draft' ? '임시저장(draft)' : '예약(scheduled)'} 완료 — admin에서 확인 필요`
-        return { content: [{ type: 'text', text: liveNote }] }
+
+        const indexNote = finalStatus === 'published'
+          ? `\n🔍 Google 색인: ${indexingResult.googleIndexing || '미실행'}\n⚡ IndexNow: ${indexingResult.indexNow || '미실행'}\n\nadd_publish_log 호출 시 google_indexing="${indexingResult.googleIndexing || ''}" index_now="${indexingResult.indexNow || ''}" 를 함께 넘겨주세요.`
+          : ''
+
+        return { content: [{ type: 'text', text: liveNote + indexNote }] }
       }
     )
 
