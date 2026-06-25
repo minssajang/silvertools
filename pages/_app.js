@@ -23,13 +23,13 @@ export default function App({ Component, pageProps }) {
         />
 
         {/* Google Analytics */}
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-15151018361" />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-1FRFSVVNNZ" />
         <script dangerouslySetInnerHTML={{
           __html: `
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-15151018361');
+            gtag('config', 'G-1FRFSVVNNZ');
           `
         }} />
       </Head>
