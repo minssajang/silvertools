@@ -61,8 +61,14 @@ export default function Medicine() {
       const next = [...logs]
       next[exists] = { ...next[exists], taken: !next[exists].taken }
       saveLogs(next)
+      if (next[exists].taken) {
+        const med = meds.find(m => m.id === medId)
+        window.gtag?.('event', 'medicine_taken', { med_name: med?.name || medId, time })
+      }
     } else {
       saveLogs([...logs, { medId, date: todayStr, time, taken: true }])
+      const med = meds.find(m => m.id === medId)
+      window.gtag?.('event', 'medicine_taken', { med_name: med?.name || medId, time })
     }
   }
 
@@ -74,6 +80,11 @@ export default function Medicine() {
       setEditId(null)
     } else {
       saveMeds([...meds, { ...form, id: Date.now().toString() }])
+      window.gtag?.('event', 'medicine_add', {
+        med_name: form.name,
+        times_count: form.times.length,
+        days_count: form.days.length,
+      })
     }
     setForm({ name: '', dose: '', times: ['08:00'], days: [0,1,2,3,4,5,6], color: ACCENT, memo: '' })
     setShowAdd(false)

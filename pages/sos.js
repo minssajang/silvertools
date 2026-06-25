@@ -46,6 +46,9 @@ export default function SOS() {
       const next = [...contacts]; next[editIdx] = form; saveContacts(next); setEditIdx(null)
     } else {
       saveContacts([...contacts, form])
+      window.gtag?.('event', 'contact_add', {
+        relation: form.relation || '미지정',
+      })
     }
     setForm({ name: '', phone: '', relation: '', memo: '' })
     setShowAdd(false)
@@ -81,6 +84,10 @@ export default function SOS() {
   }
 
   const triggerSOS = () => {
+    window.gtag?.('event', 'sos_trigger', {
+      has_contact: contacts.length > 0,
+      call_target: contacts.length > 0 ? contacts[0].phone : '119',
+    })
     if (contacts.length > 0) {
       window.location.href = `tel:${contacts[0].phone}`
     } else {
@@ -201,7 +208,9 @@ export default function SOS() {
                 { num: '1339', label: lang === 'ko' ? '1339 응급의료' : '1339 Medical', color: '#f59e0b' },
                 { num: '129', label: lang === 'ko' ? '129 복지콜' : '129 Welfare', color: '#10b981' },
               ].map(e => (
-                <a key={e.num} href={`tel:${e.num}`} className="eq-btn" style={{ background: e.color + '22', color: e.color, border: `2px solid ${e.color}44` }}>
+                <a key={e.num} href={`tel:${e.num}`} className="eq-btn"
+                  onClick={() => window.gtag?.('event', 'emergency_call', { number: e.num, label: e.label })}
+                  style={{ background: e.color + '22', color: e.color, border: `2px solid ${e.color}44` }}>
                   <span style={{ fontSize: 28, fontWeight: 900 }}>{e.num}</span>
                   <span style={{ fontSize: 13 }}>{e.label}</span>
                 </a>

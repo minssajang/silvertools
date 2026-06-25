@@ -157,7 +157,7 @@ export default function BlogPost() {
     if (!slug) return
     fetch(`/api/blog/posts?slug=${slug}`)
       .then(r => r.json())
-      .then(data => { setPost(data); setLoading(false) })
+      .then(data => { setPost(data); setLoading(false); if (data && !data.error) { const slug = window.location.pathname.split("/blog/")[1]; window.gtag?.("event", "blog_read", { blog_slug: slug, blog_title: data.title || slug, blog_category: data.category || "unknown" }); } })
       .catch(() => setLoading(false))
     // 내부링크 추천용 전체 글 목록 (최대 100개)
     fetch('/api/blog/posts?limit=100')
