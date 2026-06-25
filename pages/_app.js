@@ -44,36 +44,25 @@ export default function App({ Component, pageProps }) {
   return (
     <>
       <Head>
-        {/* Google Fonts — preconnect + preload로 렌더링 차단 방지 */}
+        {/* Google Fonts preconnect */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          rel="preload"
-          as="style"
-          href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&display=swap"
-        />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&display=swap"
-          media="print"
-          onLoad="this.media='all'"
-        />
-        <noscript>
-          <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&display=swap" />
-        </noscript>
 
         {/* 검색엔진 인증 */}
         <meta name="google-site-verification" content="828Mf-hRlCpwvG4M6VOXjZidjk3eV0a5Pe4OVnXhq0Y" />
         <meta name="google-site-verification" content="wmEuMs0GN6krWw8tY9eziKXjvvN4nROS0D_6s6j4-vY" />
-        <meta name="naver-site-verification" content="c684c5f62177e061e405ce1be7874e0c2b52650b" />
+        <meta name="naver-site-verification" content="dfbbcee12253fc4ee1e515ef849d1e6c42039a2c" />
+        {/* Yandex 인증 — 사용 시 아래 주석 해제
         <meta name="yandex-verification" content="YOUR_YANDEX_VERIFICATION_CODE" />
+        */}
 
-        {/* Google AdSense */}
+        {/* Google AdSense — 실제 ID 발급 후 아래 주석 해제
         <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=YOUR_ADSENSE_CLIENT_ID"
           crossOrigin="anonymous"
         />
+        */}
 
         {/* Google Analytics */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-1FRFSVVNNZ" />
