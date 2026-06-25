@@ -109,7 +109,7 @@ export default async function handler(req, res) {
 
       // 1) Google Indexing API
       try {
-        const { GoogleAuth } = require('google-auth-library')
+        const { GoogleAuth } = await import('google-auth-library')
         const auth = new GoogleAuth({
           credentials: JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON),
           scopes: ['https://www.googleapis.com/auth/indexing'],
