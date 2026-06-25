@@ -1,4 +1,4 @@
-const BASE_URL = 'https://www.silvertools.co.kr'
+const BASE_URL = 'https://www.silvertools.kr'
 
 const PAGES = [
   { url: '/',                changefreq: 'daily',   priority: '1.0' },
