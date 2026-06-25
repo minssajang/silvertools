@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  serverExternalPackages: ['google-auth-library', 'google-logging-utils', 'gcp-metadata'],
   reactStrictMode: true,
   images: {
     domains: ['images.unsplash.com', 'plus.unsplash.com'],
