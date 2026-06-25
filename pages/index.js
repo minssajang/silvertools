@@ -126,6 +126,14 @@ export default function Home() {
         <meta property="og:description" content={t.metaDesc} />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="SilverTools" />
+        <meta property="og:image" content="https://www.silvertools.kr/og-image.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:url" content="https://www.silvertools.kr/" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={t.metaTitle} />
+        <meta name="twitter:description" content={t.metaDesc} />
+        <meta name="twitter:image" content="https://www.silvertools.kr/og-image.png" />
         <link rel="canonical" href="https://www.silvertools.co.kr/" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
