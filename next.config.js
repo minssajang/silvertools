@@ -70,6 +70,20 @@ const nextConfig = {
         destination: 'https://www.silvertools.kr/:path*',
         permanent: true,
       },
+      // apex(silvertools.kr) -> www로 통일하되, ads.txt는 애드센스 크롤러가
+      // 리다이렉트 없이 바로 읽을 수 있도록 예외로 둔다.
+      {
+        source: '/:path((?!ads\\.txt$).*)',
+        has: [{ type: 'host', value: 'silvertools.kr' }],
+        destination: 'https://www.silvertools.kr/:path*',
+        permanent: true,
+      },
+      {
+        source: '/',
+        has: [{ type: 'host', value: 'silvertools.kr' }],
+        destination: 'https://www.silvertools.kr/',
+        permanent: true,
+      },
     ]
   },
 
