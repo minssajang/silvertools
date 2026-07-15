@@ -10,6 +10,11 @@ import ContentIdeaPanel from '../components/admin/ContentIdeaPanel'
 import KeywordPanel from '../components/admin/KeywordPanel'
 import BoardAdminPanel from '../components/admin/BoardAdminPanel'
 import SystemPromptPanel from '../components/admin/SystemPromptPanel'
+import BacklinkPanel from '../components/admin/BacklinkPanel'
+import CoupangPanel from '../components/admin/CoupangPanel'
+import CoupangProductsPanel from '../components/admin/CoupangProductsPanel'
+import PopupPanel from '../components/admin/PopupPanel'
+import McpPanel from '../components/admin/McpPanel'
 import { S, Toggle, Toast } from '../components/admin/AdminUI'
 
 const TAB_LABELS = {
@@ -25,6 +30,11 @@ const TAB_LABELS = {
   system_prompt: '🤖 Claude 지침',
   free_board: '💬 자유게시판',
   requests: '📬 부탁해요',
+  backlink: '🔗 백링크 관리',
+  coupang: '🛒 쿠팡 관리',
+  coupang_products: '📦 쿠팡상품',
+  popup: '📢 팝업 관리',
+  mcp: '🔌 MCP 관리',
   password: '🔑 비밀번호 변경',
 }
 
@@ -232,6 +242,18 @@ export default function Admin() {
                 onSaved={() => showToast('✅ 저장되었습니다')} />
             )}
 
+            {activeTab === 'coupang' && (
+              <CoupangPanel adminToken={adminToken} />
+            )}
+
+            {activeTab === 'coupang_products' && (
+              <CoupangProductsPanel adminToken={adminToken} />
+            )}
+
+            {activeTab === 'popup' && (
+              <PopupPanel adminToken={adminToken} />
+            )}
+
             {(activeTab === 'blog_write' || activeTab === 'blog_admin') && (
               <BlogAdminPanel key={activeTab} adminToken={adminToken} initialView={activeTab === 'blog_write' ? 'write' : 'list'} />
             )}
@@ -259,6 +281,14 @@ export default function Admin() {
 
             {(activeTab === 'free_board' || activeTab === 'requests') && (
               <BoardAdminPanel adminToken={adminToken} postType={activeTab === 'free_board' ? 'free' : 'request'} />
+            )}
+
+            {activeTab === 'backlink' && (
+              <BacklinkPanel adminToken={adminToken} />
+            )}
+
+            {activeTab === 'mcp' && (
+              <McpPanel adminToken={adminToken} />
             )}
 
             {activeTab === 'password' && (

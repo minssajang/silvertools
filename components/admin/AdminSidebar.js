@@ -4,6 +4,9 @@ const NAV = [
   { id: 'settings',      label: '서비스 설정',   icon: '🔧' },
   { id: 'legal',         label: '약관 관리',     icon: '📜' },
   { id: 'adsense',       label: '광고 관리',     icon: '📢' },
+  { id: 'coupang',       label: '쿠팡 관리',     icon: '🛒' },
+  { id: 'coupang_products', label: '쿠팡상품',   icon: '📦' },
+  { id: 'popup',         label: '팝업 관리',     icon: '📢' },
   { id: 'blog_write',    label: '게시판 글쓰기', icon: '✍️' },
   { id: 'blog_admin',    label: '게시판 관리',   icon: '📝' },
   { id: 'blog_menu',     label: '게시판 메뉴관리', icon: '📋' },
@@ -13,6 +16,8 @@ const NAV = [
   { id: 'requests',      label: '부탁해요',     icon: '📬' },
   { id: 'keyword',       label: '키워드 관리',   icon: '🔍' },
   { id: 'system_prompt', label: 'Claude 지침',  icon: '🤖' },
+  { id: 'backlink',      label: '백링크 관리',   icon: '🔗' },
+  { id: 'mcp',           label: 'MCP 관리',      icon: '🔌' },
   { id: 'password',      label: '비밀번호 변경', icon: '🔑' },
 ]
 

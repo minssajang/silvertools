@@ -36,10 +36,15 @@ export default async function handler(req, res) {
       if (!isAdmin) q = q.eq('status', 'published')
       const { data, error } = await q.single()
       if (error || !data) return res.status(404).json({ error: 'Not found' })
-      // 비밀글은 content 제외하고 반환 (별도 검증 API에서 content 제공)
-      if (!isAdmin && data.is_secret) {
-        const { content, secret_password, ...safeData } = data
-        return res.status(200).json({ ...safeData, is_secret: true, content: null })
+      // 관리자 전용 필드(제목·SEO 점수, 네이버 요약, 인스타 카드뉴스)는 방문자에게 노출하지 않는다
+      if (!isAdmin) {
+        const { secret_password, title_score, title_score_detail, seo_score, seo_score_detail, naver_summary, instagram_cards, ...rest } = data
+        // 비밀글은 content 제외하고 반환 (별도 검증 API에서 content 제공)
+        if (data.is_secret) {
+          const { content, ...safeData } = rest
+          return res.status(200).json({ ...safeData, is_secret: true, content: null })
+        }
+        return res.status(200).json(rest)
       }
       return res.status(200).json(data)
     }
@@ -55,8 +60,10 @@ export default async function handler(req, res) {
     q = q.range(Number(offset), Number(offset) + Number(limit) - 1)
     const { data, error } = await q
     if (error) return res.status(500).json({ error: error.message })
-    // 목록에서는 secret_password 필드 제거
-    const safeList = (data || []).map(({ secret_password, ...rest }) => rest)
+    // 목록에서는 secret_password 필드 제거. 관리자 아니면 SEO 점수·네이버 요약·인스타 카드뉴스도 제거
+    const safeList = (data || []).map(({ secret_password, title_score, title_score_detail, seo_score, seo_score_detail, naver_summary, instagram_cards, ...rest }) =>
+      isAdmin ? { ...rest, title_score, title_score_detail, seo_score, seo_score_detail, naver_summary, instagram_cards } : rest
+    )
     return res.status(200).json(safeList)
   }
 
@@ -94,6 +101,12 @@ export default async function handler(req, res) {
       status,
       scheduled_at: status === 'scheduled' ? (body.scheduled_at || null) : null,
       published_at: status === 'published' ? nowIso : null,
+      title_score: body.title_score != null ? body.title_score : null,
+      title_score_detail: body.title_score_detail || null,
+      seo_score: body.seo_score != null ? body.seo_score : null,
+      seo_score_detail: body.seo_score_detail || null,
+      naver_summary: body.naver_summary || null,
+      instagram_cards: body.instagram_cards || null,
       created_at: nowIso,
       updated_at: nowIso,
     }
@@ -185,6 +198,12 @@ export default async function handler(req, res) {
       status,
       scheduled_at: status === 'scheduled' ? (body.scheduled_at || null) : null,
       published_at: body.published_at || null,
+      title_score: body.title_score != null ? body.title_score : null,
+      title_score_detail: body.title_score_detail || null,
+      seo_score: body.seo_score != null ? body.seo_score : null,
+      seo_score_detail: body.seo_score_detail || null,
+      naver_summary: body.naver_summary || null,
+      instagram_cards: body.instagram_cards || null,
       updated_at: nowKST(),
     }
     const { data, error } = await supabase.from('blog_posts')

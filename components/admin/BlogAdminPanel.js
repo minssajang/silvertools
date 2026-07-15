@@ -237,7 +237,7 @@ export default function BlogAdminPanel({ adminToken, initialView }) {
   const [routineChecks, setRoutineChecks] = useState({})
   const [collapsedRoutines, setCollapsedRoutines] = useState({})
 
-  const emptyForm = { title:'', slug:'', summary:'', content:'', category:'magnifier-down', tags:'', thumbnail:'', scheduledAt:'', publishedAt:'' }
+  const emptyForm = { title:'', slug:'', summary:'', content:'', category:'magnifier-down', tags:'', thumbnail:'', scheduledAt:'', publishedAt:'', titleScore:'', titleScoreDetail:'', seoScore:'', seoScoreDetail:'', naverSummary:'', instagramCards:'' }
   const [form, setForm] = useState(emptyForm)
 
   const token = () => adminToken
@@ -300,6 +300,12 @@ export default function BlogAdminPanel({ adminToken, initialView }) {
       thumbnail: post.cover_image || '',
       scheduledAt: post.scheduled_at ? post.scheduled_at.slice(0,16) : '',
       publishedAt: post.published_at || '',
+      titleScore: post.title_score != null ? String(post.title_score) : '',
+      titleScoreDetail: post.title_score_detail ? JSON.stringify(post.title_score_detail, null, 2) : '',
+      seoScore: post.seo_score != null ? String(post.seo_score) : '',
+      seoScoreDetail: post.seo_score_detail ? JSON.stringify(post.seo_score_detail, null, 2) : '',
+      naverSummary: post.naver_summary || '',
+      instagramCards: post.instagram_cards || '',
     })
     setPreview(false); setView('write')
   }
@@ -321,6 +327,11 @@ export default function BlogAdminPanel({ adminToken, initialView }) {
     try {
       const slug = form.slug.trim() || slugify(form.title)
       const tags = form.tags ? form.tags.split(',').map(t=>t.trim()).filter(Boolean) : []
+      let titleScoreDetail = null, seoScoreDetail = null
+      try { titleScoreDetail = form.titleScoreDetail.trim() ? JSON.parse(form.titleScoreDetail) : null }
+      catch { setMsg('❌ 제목 점수 breakdown이 올바른 JSON이 아닙니다'); setTimeout(()=>setMsg(''),3000); setLoading(false); return }
+      try { seoScoreDetail = form.seoScoreDetail.trim() ? JSON.parse(form.seoScoreDetail) : null }
+      catch { setMsg('❌ SEO 점수 breakdown이 올바른 JSON이 아닙니다'); setTimeout(()=>setMsg(''),3000); setLoading(false); return }
       const body = {
         title: form.title.trim(), slug, summary: form.summary.trim(),
         content: form.content, category: form.category, tags,
@@ -329,6 +340,12 @@ export default function BlogAdminPanel({ adminToken, initialView }) {
         scheduled_at: status === 'scheduled' ? new Date(form.scheduledAt).toISOString() : null,
         // 발행 시각: 이미 한 번 발행된 적 있으면 그 시각 유지, 처음 발행되는 거면 지금 시각
         published_at: status === 'published' ? (form.publishedAt || nowKST()) : (form.publishedAt || null),
+        title_score: form.titleScore.trim() ? Number(form.titleScore) : null,
+        title_score_detail: titleScoreDetail,
+        seo_score: form.seoScore.trim() ? Number(form.seoScore) : null,
+        seo_score_detail: seoScoreDetail,
+        naver_summary: form.naverSummary.trim() || null,
+        instagram_cards: form.instagramCards.trim() || null,
       }
       const method = editId ? 'PUT' : 'POST'
       if (editId) body.id = editId
@@ -495,6 +512,42 @@ export default function BlogAdminPanel({ adminToken, initialView }) {
                 <textarea value={form.content} onChange={e=>{setForm(v=>({...v,content:e.target.value}))}}
                   rows={22} placeholder={'# 제목\n\n본문을 마크다운으로 작성하세요.\n\n## 소제목\n\n- 항목 1\n- 항목 2\n\n**굵게** *기울임* `코드`'}
                   style={S.textarea} />
+              </div>
+
+              <div style={{ border:'1px dashed #333', borderRadius:10, padding:16, display:'flex', flexDirection:'column', gap:12 }}>
+                <div style={{ fontSize:13, fontWeight:800, color:'#888' }}>🔒 관리자 전용 — 방문자에게 노출되지 않음</div>
+                <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
+                  <div>
+                    <label style={S.label}>제목 점수 (10점 만점)</label>
+                    <input type="number" min="0" max="10" value={form.titleScore} onChange={e=>setForm(v=>({...v,titleScore:e.target.value}))} placeholder="예: 9" style={S.input} />
+                  </div>
+                  <div>
+                    <label style={S.label}>SEO 점수 (100점 만점)</label>
+                    <input type="number" min="0" max="100" value={form.seoScore} onChange={e=>setForm(v=>({...v,seoScore:e.target.value}))} placeholder="예: 90" style={S.input} />
+                  </div>
+                </div>
+                <div>
+                  <label style={S.label}>제목 점수 breakdown (JSON 배열, 선택)</label>
+                  <textarea value={form.titleScoreDetail} onChange={e=>setForm(v=>({...v,titleScoreDetail:e.target.value}))} rows={3}
+                    placeholder='[{"label":"키워드 위치","points":4,"max":4,"reason":"..."}]' style={S.textarea} />
+                </div>
+                <div>
+                  <label style={S.label}>SEO 점수 breakdown (JSON 배열, 선택)</label>
+                  <textarea value={form.seoScoreDetail} onChange={e=>setForm(v=>({...v,seoScoreDetail:e.target.value}))} rows={3}
+                    placeholder='[{"label":"제목 SEO","points":13,"max":15,"pass":true,"desc":"..."}]' style={S.textarea} />
+                </div>
+                <div>
+                  <label style={S.label}>네이버 블로그용 요약글</label>
+                  <textarea value={form.naverSummary} onChange={e=>setForm(v=>({...v,naverSummary:e.target.value}))} rows={6}
+                    placeholder={'네이버 전용 제목(20~40자)\n\n본문 800~1,200자 요약...\n\n(사진: 관련 사진 1~2장을 직접 첨부해주세요)\n\n원문 보기: https://www.silvertools.kr/blog/{slug}'}
+                    style={{ ...S.textarea, fontFamily:"'Outfit', sans-serif" }} />
+                </div>
+                <div>
+                  <label style={S.label}>인스타그램 카드뉴스 스크립트 (슬라이드 4~6장 + 캡처용 HTML)</label>
+                  <textarea value={form.instagramCards} onChange={e=>setForm(v=>({...v,instagramCards:e.target.value}))} rows={8}
+                    placeholder={'슬라이드 1(표지): ...\n슬라이드 2(정보): ...\n\n--- 아래는 카드뉴스 HTML(전체 복사 → .html로 저장 후 브라우저로 열어서 캡처) ---\n<!DOCTYPE html>...'}
+                    style={S.textarea} />
+                </div>
               </div>
             </div>
 

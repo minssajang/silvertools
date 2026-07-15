@@ -7,6 +7,7 @@ import { AdSlot } from '../../components/AdSlot'
 import { findAdSlot } from '../../lib/adSlots'
 import { categoryLabel } from '../../lib/blogCategories'
 import { parseMarkdown as parseMd } from '../../lib/parseMarkdown.js'
+import { resolveCoupangDisplay } from '../../lib/coupang'
 
 // 도구 경로 매핑 (블로그 카테고리 코드 → 실제 도구 페이지)
 const TOOL_HREF = {
@@ -143,6 +144,47 @@ function ToolCTABlock({ post }) {
   )
 }
 
+// ── 쿠팡 파트너스 위젯 (사이즈 미지정 위젯만 — 관리자 > 쿠팡 관리에서 등록)
+function CoupangWidgetsBlock() {
+  const [widgets, setWidgets] = useState([])
+
+  useEffect(() => {
+    Promise.all([
+      fetch('/api/admin/coupang-links').then(r => r.json()).catch(() => []),
+      fetch('/api/admin/coupang-widgets').then(r => r.json()).catch(() => []),
+    ]).then(([links, rawWidgets]) => {
+      const { widgets: w } = resolveCoupangDisplay(links, rawWidgets)
+      setWidgets(w)
+    }).catch(() => {})
+  }, [])
+
+  if (widgets.length === 0) return null
+
+  return (
+    <div style={{ marginTop: 40, display: 'flex', flexDirection: 'column', gap: 16 }}>
+      {widgets.map((html, i) => (
+        <div key={i} dangerouslySetInnerHTML={{ __html: html }} />
+      ))}
+    </div>
+  )
+}
+
+// ── 🔒 관리자 전용 박스: 제목·SEO 점수, 네이버 요약, 인스타 카드뉴스 스크립트
+// (관리자 로그인 세션에서만 렌더링 — API도 !isAdmin이면 이 필드들을 아예 내려주지 않는다)
+function AdminOnlyBox({ post }) {
+  return (
+    <div style={{ background:'#1a1200', border:'1.5px solid #78500a', borderRadius:12, padding:'16px 20px', marginBottom:24 }}>
+      <div style={{ fontSize:13, fontWeight:800, color:'#d97706', marginBottom:10 }}>🔒 관리자 전용</div>
+      <div style={{ fontSize:13, color:'#e5c99a', marginBottom:4 }}>제목 점수: {post.title_score != null ? `${post.title_score}/10` : '내용 없음'}</div>
+      <div style={{ fontSize:13, color:'#e5c99a', marginBottom:10 }}>SEO 점수: {post.seo_score != null ? `${post.seo_score}/100` : '내용 없음'}</div>
+      <div style={{ fontSize:12, fontWeight:700, color:'#d97706', marginBottom:4 }}>📋 네이버 블로그용 요약글</div>
+      <div style={{ fontSize:13, color:'#e5c99a', whiteSpace:'pre-wrap', marginBottom:10 }}>{post.naver_summary || '내용 없음'}</div>
+      <div style={{ fontSize:12, fontWeight:700, color:'#d97706', marginBottom:4 }}>📱 인스타그램 카드뉴스 스크립트</div>
+      <div style={{ fontSize:13, color:'#e5c99a', whiteSpace:'pre-wrap' }}>{post.instagram_cards || '내용 없음'}</div>
+    </div>
+  )
+}
+
 export default function BlogPost() {
   const [post, setPost] = useState(null)
   const [allPosts, setAllPosts] = useState([])
@@ -151,11 +193,14 @@ export default function BlogPost() {
   const [adsOn, setAdsOn] = useState(true)
   const [adSlots, setAdSlots] = useState([])
   const [settingsLoaded, setSettingsLoaded] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
 
   useEffect(() => {
+    const adminToken = typeof window !== 'undefined' ? sessionStorage.getItem('admin_token') : null
+    setIsAdmin(!!adminToken)
     const slug = window.location.pathname.split('/blog/')[1]
     if (!slug) return
-    fetch(`/api/blog/posts?slug=${slug}`)
+    fetch(`/api/blog/posts?slug=${slug}`, adminToken ? { headers: { 'x-admin-token': adminToken } } : undefined)
       .then(r => r.json())
       .then(data => { setPost(data); setLoading(false); if (data && !data.error) { const slug = window.location.pathname.split("/blog/")[1]; window.gtag?.("event", "blog_read", { blog_slug: slug, blog_title: data.title || slug, blog_category: data.category || "unknown" }); } })
       .catch(() => setLoading(false))
@@ -234,6 +279,8 @@ export default function BlogPost() {
           ← 목록으로
         </Link>
 
+        {isAdmin && <AdminOnlyBox post={post} />}
+
         {post.cover_image && (
           <img src={post.cover_image} alt={post.title}
             style={{ width: '100%', maxHeight: 360, objectFit: 'cover', borderRadius: 'var(--radius)', marginBottom: 28, display: 'block' }} referrerPolicy="no-referrer" />
@@ -288,6 +335,7 @@ export default function BlogPost() {
 
               {/* 이 글의 도구 바로 써보기 + 전체 도구 둘러보기 */}
               <ToolCTABlock post={post} />
+              <CoupangWidgetsBlock />
             </>
           )
         })()}

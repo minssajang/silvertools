@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import '../styles/globals.css'
+import PopupDisplay from '../components/PopupDisplay'
 
 // 도구 페이지 경로 → 이름 매핑
 const TOOL_NAMES = {
@@ -73,6 +74,7 @@ export default function App({ Component, pageProps }) {
         }} />
       </Head>
       <Component {...pageProps} />
+      <PopupDisplay />
     </>
   )
 }
