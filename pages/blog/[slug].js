@@ -118,7 +118,7 @@ function CuriosityBlock({ post, allPosts, inlineUsedIds }) {
   )
 }
 
-// ── 도구 사용 유도 하단 박스 (출석부 식 "회원가입 유도"를 우리 결 = "도구 무료 사용"으로 변경)
+// ── 도구 사용 유도 하단 박스
 function ToolCTABlock({ post }) {
   const href = TOOL_HREF[post?.category] || '/'
   const label = categoryLabel(post?.category) || '도구'
@@ -169,18 +169,79 @@ function CoupangWidgetsBlock() {
   )
 }
 
-// ── 🔒 관리자 전용 박스: 제목·SEO 점수, 네이버 요약, 인스타 카드뉴스 스크립트
+// ── 🔒 관리자 전용 박스: 제목·SEO 점수 + 세부 근거, 네이버 요약, 인스타 카드뉴스 스크립트
 // (관리자 로그인 세션에서만 렌더링 — API도 !isAdmin이면 이 필드들을 아예 내려주지 않는다)
+// 2026-07-17: title_score_detail/seo_score_detail 세부 근거 표시 + 복사 버튼 추가,
+// 네 항목 전부 <details>로 접어서 기본 접힘 상태로 통일 (attendance 프로젝트 UI와 동일하게 맞춤)
 function AdminOnlyBox({ post }) {
+  const [copiedField, setCopiedField] = useState('')
+
+  const copyToClipboard = (field, text) => {
+    if (!text) return
+    try {
+      navigator.clipboard.writeText(text)
+      setCopiedField(field)
+      setTimeout(() => setCopiedField(''), 1500)
+    } catch {}
+  }
+
   return (
     <div style={{ background:'#1a1200', border:'1.5px solid #78500a', borderRadius:12, padding:'16px 20px', marginBottom:24 }}>
       <div style={{ fontSize:13, fontWeight:800, color:'#d97706', marginBottom:10 }}>🔒 관리자 전용</div>
       <div style={{ fontSize:13, color:'#e5c99a', marginBottom:4 }}>제목 점수: {post.title_score != null ? `${post.title_score}/10` : '내용 없음'}</div>
       <div style={{ fontSize:13, color:'#e5c99a', marginBottom:10 }}>SEO 점수: {post.seo_score != null ? `${post.seo_score}/100` : '내용 없음'}</div>
-      <div style={{ fontSize:12, fontWeight:700, color:'#d97706', marginBottom:4 }}>📋 네이버 블로그용 요약글</div>
-      <div style={{ fontSize:13, color:'#e5c99a', whiteSpace:'pre-wrap', marginBottom:10 }}>{post.naver_summary || '내용 없음'}</div>
-      <div style={{ fontSize:12, fontWeight:700, color:'#d97706', marginBottom:4 }}>📱 인스타그램 카드뉴스 스크립트</div>
-      <div style={{ fontSize:13, color:'#e5c99a', whiteSpace:'pre-wrap' }}>{post.instagram_cards || '내용 없음'}</div>
+
+      {(Array.isArray(post.title_score_detail) && post.title_score_detail.length > 0) && (
+        <details style={{ marginBottom:10 }}>
+          <summary style={{ fontSize:12, fontWeight:700, color:'#d97706', cursor:'pointer' }}>📐 제목 점수 세부 근거</summary>
+          <ul style={{ margin:'4px 0 0', paddingLeft:18 }}>
+            {post.title_score_detail.map((row, i) => (
+              <li key={i} style={{ fontSize:13, color:'#e5c99a', marginBottom:4 }}>
+                <strong>{row.label}</strong> {row.points}/{row.max} — {row.reason}
+              </li>
+            ))}
+          </ul>
+        </details>
+      )}
+
+      {(Array.isArray(post.seo_score_detail) && post.seo_score_detail.length > 0) && (
+        <details style={{ marginBottom:10 }}>
+          <summary style={{ fontSize:12, fontWeight:700, color:'#d97706', cursor:'pointer' }}>📐 SEO 체크리스트 세부 근거</summary>
+          <ul style={{ margin:'4px 0 0', paddingLeft:18 }}>
+            {post.seo_score_detail.map((row, i) => (
+              <li key={i} style={{ fontSize:13, color:'#e5c99a', marginBottom:4 }}>
+                {row.pass ? '✅' : '❌'} <strong>{row.label}</strong> {row.points}/{row.max} — {row.desc}
+              </li>
+            ))}
+          </ul>
+        </details>
+      )}
+
+      <details style={{ marginBottom:10 }}>
+        <summary style={{ fontSize:12, fontWeight:700, color:'#d97706', cursor:'pointer' }}>📋 네이버 블로그용 요약글</summary>
+        <div style={{ display:'flex', justifyContent:'flex-end', marginTop:6 }}>
+          {post.naver_summary && (
+            <button onClick={() => copyToClipboard('naver', post.naver_summary)}
+              style={{ fontSize:11, fontWeight:700, padding:'3px 10px', borderRadius:999, border:'1px solid #d97706', background: copiedField === 'naver' ? '#d97706' : 'transparent', color: copiedField === 'naver' ? '#1a1200' : '#d97706', cursor:'pointer' }}>
+              {copiedField === 'naver' ? '복사됨!' : '복사'}
+            </button>
+          )}
+        </div>
+        <div style={{ fontSize:13, color:'#e5c99a', whiteSpace:'pre-wrap', marginTop:4 }}>{post.naver_summary || '내용 없음'}</div>
+      </details>
+
+      <details>
+        <summary style={{ fontSize:12, fontWeight:700, color:'#d97706', cursor:'pointer' }}>📱 인스타그램 카드뉴스 스크립트</summary>
+        <div style={{ display:'flex', justifyContent:'flex-end', marginTop:6 }}>
+          {post.instagram_cards && (
+            <button onClick={() => copyToClipboard('instagram', post.instagram_cards)}
+              style={{ fontSize:11, fontWeight:700, padding:'3px 10px', borderRadius:999, border:'1px solid #d97706', background: copiedField === 'instagram' ? '#d97706' : 'transparent', color: copiedField === 'instagram' ? '#1a1200' : '#d97706', cursor:'pointer' }}>
+              {copiedField === 'instagram' ? '복사됨!' : '복사'}
+            </button>
+          )}
+        </div>
+        <div style={{ fontSize:13, color:'#e5c99a', whiteSpace:'pre-wrap', marginTop:4 }}>{post.instagram_cards || '내용 없음'}</div>
+      </details>
     </div>
   )
 }
